@@ -38,7 +38,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
         clearBtn = new javax.swing.JButton();
         showPasswordCheckbox = new javax.swing.JCheckBox();
         rememberCheckBox = new javax.swing.JCheckBox();
-        usernameLabel1 = new javax.swing.JLabel();
+        judulLabel = new javax.swing.JLabel();
         registPageLabel1 = new javax.swing.JLabel();
         resetPassBtn = new javax.swing.JButton();
 
@@ -103,11 +103,11 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
             }
         });
 
-        usernameLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        usernameLabel1.setFont(new java.awt.Font("Coustard", 1, 24)); // NOI18N
-        usernameLabel1.setForeground(new java.awt.Color(76, 61, 25));
-        usernameLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        usernameLabel1.setText("NyamBeans");
+        judulLabel.setBackground(new java.awt.Color(0, 0, 0));
+        judulLabel.setFont(new java.awt.Font("Coustard", 1, 24)); // NOI18N
+        judulLabel.setForeground(new java.awt.Color(76, 61, 25));
+        judulLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        judulLabel.setText("NyamBeans");
 
         registPageLabel1.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
         registPageLabel1.setForeground(new java.awt.Color(53, 64, 36));
@@ -153,7 +153,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addComponent(showPasswordCheckbox, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(usernameLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                        .addComponent(judulLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                         .addComponent(emailLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(114, 114, 114))
         );
@@ -161,7 +161,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(usernameLabel1)
+                .addComponent(judulLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(emailLabel)
                 .addGap(1, 1, 1)
@@ -307,6 +307,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField emailField;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel judulLabel;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel registPageLabel1;
@@ -315,6 +316,5 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox showPasswordCheckbox;
     private javax.swing.JTextField usernameField;
     private javax.swing.JLabel usernameLabel;
-    private javax.swing.JLabel usernameLabel1;
     // End of variables declaration//GEN-END:variables
 }
