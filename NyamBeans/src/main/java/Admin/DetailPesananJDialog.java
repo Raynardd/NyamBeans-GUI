@@ -4,6 +4,11 @@
  */
 package Admin;
 
+import Model.DetailPesanan;
+import Model.Pesanan;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author nenap
@@ -15,9 +20,43 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
     /**
      * Creates new form detailUserJDialog
      */
-    public DetailPesananJDialog(java.awt.Frame parent, boolean modal) {
+    public DetailPesananJDialog(java.awt.Frame parent, boolean modal, int idPesanan) {
         super(parent, modal);
         initComponents();
+        loadData(idPesanan); // Panggil fungsi load data
+        setLocationRelativeTo(null); // Agar muncul di tengah layar
+    }
+    
+    // Method Helper: Mengisi Form dan Tabel
+    private void loadData(int id) {
+        // 1. Isi Data Header (Nama, Status, Total, Catatan)
+        Pesanan p = Pesanan.getPesananById(id);
+        if (p != null) {
+            pemesanField.setText(p.getNamaPemesan());
+            statusField.setText(p.getStatus());
+            totalHargaField.setText("Rp " + p.getTotalHarga());
+            catatanText.setText(p.getCatatan());
+            
+            // Matikan edit agar Admin hanya bisa melihat (Read Only)
+            pemesanField.setEditable(false);
+            statusField.setEditable(false);
+            totalHargaField.setEditable(false);
+            catatanText.setEditable(false);
+        }
+
+        // 2. Isi Tabel Rincian Menu
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        List<DetailPesanan> details = DetailPesanan.getDetailByPesananId(id);
+        
+        for (DetailPesanan d : details) {
+            model.addRow(new Object[]{
+                d.getNamaMenu(),
+                d.getHargaSatuan(),
+                d.getJumlahPorsi(),
+                d.getSubtotal()
+            });
+        }
     }
 
     /**
@@ -32,16 +71,86 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        pemesanField = new javax.swing.JTextField();
+        statusField = new javax.swing.JTextField();
+        totalHargaField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        catatanText = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(76, 61, 25));
 
-        jPanel1.setBackground(new java.awt.Color(229, 215, 196));
+        jPanel1.setBackground(new java.awt.Color(162, 154, 124));
 
         jLabel1.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel1.setText("Nama Lengkap :");
+        jLabel1.setForeground(new java.awt.Color(76, 61, 25));
+        jLabel1.setText("Detail Pesanan  : ");
 
-        jLabel2.setText("Username");
+        jLabel2.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(76, 61, 25));
+        jLabel2.setText("Status               :");
+
+        jLabel3.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(76, 61, 25));
+        jLabel3.setText("Daftar Menu yang Dipesan :");
+
+        jTable1.setBackground(new java.awt.Color(229, 215, 196));
+        jTable1.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jTable1.setForeground(new java.awt.Color(76, 61, 25));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Menu", "Harga", "Qty", "Subtotal"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel4.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(76, 61, 25));
+        jLabel4.setText("Total Harga : Rp.");
+
+        jLabel5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(76, 61, 25));
+        jLabel5.setText("Catatan       :");
+
+        pemesanField.setBackground(new java.awt.Color(162, 154, 124));
+        pemesanField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        pemesanField.setForeground(new java.awt.Color(76, 61, 25));
+
+        statusField.setBackground(new java.awt.Color(162, 154, 124));
+        statusField.setForeground(new java.awt.Color(76, 61, 25));
+
+        totalHargaField.setBackground(new java.awt.Color(162, 154, 124));
+        totalHargaField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        totalHargaField.setForeground(new java.awt.Color(76, 61, 25));
+
+        catatanText.setBackground(new java.awt.Color(162, 154, 124));
+        catatanText.setColumns(20);
+        catatanText.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        catatanText.setForeground(new java.awt.Color(76, 61, 25));
+        catatanText.setRows(5);
+        jScrollPane2.setViewportView(catatanText);
+
+        jButton1.setBackground(new java.awt.Color(53, 64, 36));
+        jButton1.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(229, 215, 196));
+        jButton1.setText("Tutup");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -49,19 +158,58 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(totalHargaField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(statusField))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pemesanField, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addGap(83, 83, 83)
-                .addComponent(jLabel2)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(pemesanField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(statusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(totalHargaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -78,46 +226,24 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                DetailPesananJDialog dialog = new DetailPesananJDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea catatanText;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField pemesanField;
+    private javax.swing.JTextField statusField;
+    private javax.swing.JTextField totalHargaField;
     // End of variables declaration//GEN-END:variables
 }

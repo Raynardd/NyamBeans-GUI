@@ -4,6 +4,16 @@
  */
 package User;
 
+import Model.DetailPesanan;
+import Model.Menu;
+import Model.Pesanan;
+import Model.User;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author Raynard
@@ -15,8 +25,76 @@ public class UserJFrame extends javax.swing.JFrame {
     /**
      * Creates new form UserJFrame
      */
+    
+    private User currentUser;
+    private List<DetailPesanan> keranjangBelanja; // Menyimpan item sementara
+    private int grandTotal = 0;
+    
     public UserJFrame() {
         initComponents();
+    }
+    
+    // Constructor Utama (Dipanggil dari Login)
+    public UserJFrame(User user) {
+        initComponents();
+        this.currentUser = user;
+        this.keranjangBelanja = new ArrayList<>();
+        
+        initUserData();
+        loadKatalogMenu();
+        loadRiwayatPesanan();
+    }
+    
+    private void loadKatalogMenu() {
+        DefaultTableModel model = (DefaultTableModel) tabelMenu.getModel();
+        model.setRowCount(0);
+        List<Menu> menus = Menu.getAllMenu();
+        for (Menu m : menus) {
+            model.addRow(new Object[]{ m.getNamaMenu(), m.getJenisMenu(), m.getHargaPerPorsi(), m.getDeskripsi() });
+        }
+    }
+    
+    private void loadRiwayatPesanan() {
+        if (currentUser == null) return;
+        DefaultTableModel model = (DefaultTableModel) tabelRiwayatPesanan.getModel();
+        model.setRowCount(0);
+        List<Pesanan> list = Pesanan.getRiwayatUser(currentUser.getIdUser());
+        for (Pesanan p : list) {
+            model.addRow(new Object[]{ p.getTglAcara(), "Lihat Detail", p.getTotalHarga(), p.getStatus() });
+        }
+    }
+    
+    private void refreshTabelKeranjang() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        grandTotal = 0;
+        
+        for (DetailPesanan d : keranjangBelanja) {
+            model.addRow(new Object[]{
+                d.getNamaMenu(),
+                d.getHargaSatuan(),
+                d.getJumlahPorsi(),
+                d.getSubtotal()
+            });
+            grandTotal += d.getSubtotal();
+        }
+        
+        totalField.setText(String.valueOf(grandTotal));
+        int dp = grandTotal / 2;
+        dpField.setText(String.valueOf(dp));
+    }
+    
+    private void initUserData() {
+        if (currentUser != null) {
+            usernameLabel1.setText("Halo, " + currentUser.getNama() + "!");
+            
+            // Tab Profil
+            namaLengkapField.setText(currentUser.getNama());
+            usernameField.setText(currentUser.getUsername());
+            // Password tidak ditampilkan demi keamanan
+            noTelpField.setText(currentUser.getNoTelp());
+            alamatTextArea.setText(currentUser.getAlamat());
+        }
     }
 
     /**
@@ -93,6 +171,11 @@ public class UserJFrame extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(229, 215, 196));
         jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTabbedPane1.setBackground(new java.awt.Color(162, 154, 124));
         jTabbedPane1.setForeground(new java.awt.Color(76, 61, 25));
@@ -151,6 +234,11 @@ public class UserJFrame extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(229, 215, 196));
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -275,10 +363,12 @@ public class UserJFrame extends javax.swing.JFrame {
 
         jmlPorsiSpiner.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
 
+        totalField.setEditable(false);
         totalField.setBackground(new java.awt.Color(229, 215, 196));
         totalField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         totalField.setForeground(new java.awt.Color(76, 61, 25));
 
+        dpField.setEditable(false);
         dpField.setBackground(new java.awt.Color(229, 215, 196));
         dpField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         dpField.setForeground(new java.awt.Color(76, 61, 25));
@@ -302,12 +392,22 @@ public class UserJFrame extends javax.swing.JFrame {
                 "Nama Menu", "Harga/porsi", "Jumlah", "Subtotal"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTable1);
 
         tambahkanBtn.setBackground(new java.awt.Color(53, 64, 36));
         tambahkanBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         tambahkanBtn.setForeground(new java.awt.Color(229, 215, 196));
         tambahkanBtn.setText("+ Tambahkan");
+        tambahkanBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahkanBtnActionPerformed(evt);
+            }
+        });
 
         hapusItemBtn.setBackground(new java.awt.Color(134, 15, 15));
         hapusItemBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -323,6 +423,11 @@ public class UserJFrame extends javax.swing.JFrame {
         PesanBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         PesanBtn.setForeground(new java.awt.Color(229, 215, 196));
         PesanBtn.setText("Pesan Sekarang");
+        PesanBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PesanBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -451,6 +556,11 @@ public class UserJFrame extends javax.swing.JFrame {
                 "Nama Menu", "Jenis Menu", "Harga/porsi", "Deskripsi"
             }
         ));
+        tabelMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelMenuMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tabelMenu);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -550,12 +660,119 @@ public class UserJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void hapusItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusItemBtnActionPerformed
-        // TODO add your handling code here:
+        int row = jTable1.getSelectedRow();
+        if (row >= 0) {
+            keranjangBelanja.remove(row);
+            refreshTabelKeranjang();
+        } else {
+            JOptionPane.showMessageDialog(this, "Pilih item yang mau dihapus!");
+        }
     }//GEN-LAST:event_hapusItemBtnActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameFieldActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (currentUser == null) return;
+        
+        currentUser.setNama(namaLengkapField.getText());
+        currentUser.setUsername(usernameField.getText());
+        currentUser.setNoTelp(noTelpField.getText());
+        currentUser.setAlamat(alamatTextArea.getText());
+        
+        String pass = passwordField.getText();
+        if (!pass.isEmpty()) {
+            currentUser.setPassword(pass);
+        }
+        
+        if (currentUser.updateUser()) {
+            JOptionPane.showMessageDialog(this, "Profil Berhasil Diupdate!");
+            usernameLabel1.setText("Halo, " + currentUser.getNama() + "!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal update profil.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tambahkanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahkanBtnActionPerformed
+        String namaMenu = menuField.getText();
+        int qty = (int) jmlPorsiSpiner.getValue();
+        
+        if (qty <= 0) {
+            JOptionPane.showMessageDialog(this, "Jumlah porsi minimal 1!");
+            return;
+        }
+        
+        Menu m = Menu.getMenuByName(namaMenu);
+        if (m != null) {
+            DetailPesanan detail = new DetailPesanan(m.getIdMenu(), m.getNamaMenu(), qty, m.getHargaPerPorsi());
+            keranjangBelanja.add(detail);
+            refreshTabelKeranjang();
+            menuField.setText(""); // Reset field
+            jmlPorsiSpiner.setValue(0);
+        } else {
+            JOptionPane.showMessageDialog(this, "Menu tidak ditemukan! Cek ejaan di Katalog.");
+        }
+    }//GEN-LAST:event_tambahkanBtnActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void PesanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PesanBtnActionPerformed
+        if (keranjangBelanja.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Keranjang masih kosong!");
+            return;
+        }
+        
+        String lokasi = lokasiText.getText();
+        String catatan = catatanText.getText(); // Ambil catatan
+        Date tglAcara = (Date) tanggalSpinner.getValue();
+        String metode = jComboBox1.getSelectedItem().toString(); // Ambil metode bayar
+        
+        if (lokasi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lokasi acara harus diisi!");
+            return;
+        }
+        
+        Pesanan p = new Pesanan();
+        p.setIdUser(currentUser.getIdUser());
+        p.setTglAcara(new java.sql.Date(tglAcara.getTime()));
+        
+        // --- PERBAIKAN DI SINI ---
+        p.setLokasiAcara(lokasi); 
+        p.setCatatan(catatan);      // Set Catatan
+        p.setMetodeBayar(metode);   // Set Metode Bayar (Tunai/Transfer)
+        p.setTotalHarga(grandTotal);
+        // -------------------------
+        
+        if (p.simpanPesanan(keranjangBelanja)) {
+            JOptionPane.showMessageDialog(this, "Pesanan Berhasil Dibuat! Silakan bayar DP.");
+            keranjangBelanja.clear();
+            refreshTabelKeranjang();
+            lokasiText.setText("");
+            catatanText.setText("");
+            loadRiwayatPesanan(); // Refresh tab riwayat
+            jTabbedPane1.setSelectedIndex(3); // Pindah ke tab Riwayat
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal membuat pesanan. Cek koneksi database.");
+        }
+    }//GEN-LAST:event_PesanBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+        new Auth.LoginJFrame().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tabelMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMenuMouseClicked
+        int row = tabelMenu.getSelectedRow();
+        if (row >= 0) {
+            String namaMenu = tabelMenu.getValueAt(row, 0).toString();
+            // Pindah ke tab Buat Pesanan (Index 1)
+            jTabbedPane1.setSelectedIndex(1);
+            menuField.setText(namaMenu);
+        }
+    }//GEN-LAST:event_tabelMenuMouseClicked
 
     /**
      * @param args the command line arguments

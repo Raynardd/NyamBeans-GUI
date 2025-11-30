@@ -4,6 +4,17 @@
  */
 package Admin;
 
+import Model.User;
+import Model.Menu;
+import Model.Pesanan;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Calendar;
+
 /**
  *
  * @author nenap
@@ -15,10 +26,160 @@ public class AdminJFrame extends javax.swing.JFrame {
     /**
      * Creates new form AdminJFrame
      */
+    private int idMenuTarget = 0;
+    private int idUserTarget = 0;
+    private int idPesananTarget = 0;
+    
     public AdminJFrame() {
         initComponents();
+        
+        // Isi pilihan jenis menu (sesuai ENUM di database)
+        jenisMenu.removeAllItems();
+        jenisMenu.addItem("Paket Nasi Ekonomis");
+        jenisMenu.addItem("Paket Nasi Standar");
+        jenisMenu.addItem("Paket Nasi Premium");
+        jenisMenu.addItem("Paket Snack Ekonomis");
+        jenisMenu.addItem("Paket Snack Standar");
+        jenisMenu.addItem("Paket Snack Premium");
+        jenisMenu.addItem("Tambahan");
+
+        // Tampilkan data menu ke tabel (Nanti kita buat methodnya)
+        loadDataMenu();
+        loadDataUser();
+        loadDataPesanan();
+        initLaporanKeuangan();
+    }
+    
+    private void loadDataMenu() {
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0); // Bersihkan tabel lama
+
+        List<Menu> menus = Menu.getAllMenu();
+        for (Menu m : menus) {
+            model.addRow(new Object[]{
+                m.getIdMenu(),
+                m.getNamaMenu(),
+                m.getJenisMenu(),
+                m.getHargaPerPorsi(),
+                m.getDeskripsi()
+            });
+        }
+    }
+    
+    private void loadDataPesanan() {
+        DefaultTableModel model = (DefaultTableModel) tabelPesanan.getModel();
+        model.setRowCount(0);
+        
+        List<Pesanan> list = Pesanan.getAllPesanan();
+        for (Pesanan p : list) {
+            model.addRow(new Object[]{
+                p.getIdPesanan(),
+                p.getTglAcara(),
+                p.getNamaPemesan(),
+                p.getLokasiAcara(),
+                p.getTotalHarga(),
+                p.getStatus()
+            });
+        }
+    }
+    
+    // Method untuk mengisi tanggal default (Bulan ini) dan load data otomatis
+    private void initLaporanKeuangan() {
+        // 1. Atur Tanggal Otomatis
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+
+        // Tanggal Akhir = Hari ini
+        String tglAkhir = sdf.format(cal.getTime());
+        sampaiTanggalField.setText(tglAkhir);
+
+        // Tanggal Awal = Tanggal 1 bulan ini
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        String tglAwal = sdf.format(cal.getTime());
+        dariTanggalFirld.setText(tglAwal);
+
+        // 2. Panggil logika tampilkan data (Sama seperti tombol ditekan)
+        tampilkanLaporan(tglAwal, tglAkhir);
+    }
+    
+    // Kita pisahkan logika load tabel laporan agar bisa dipanggil dari dua tempat
+    private void tampilkanLaporan(String tglAwalStr, String tglAkhirStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date tglAwal = sdf.parse(tglAwalStr);
+            Date tglAkhir = sdf.parse(tglAkhirStr);
+
+            // Panggil Model Pesanan
+            List<Pesanan> laporan = Pesanan.getLaporan(tglAwal, tglAkhir);
+
+            DefaultTableModel model = (DefaultTableModel) tabelDataKeuangan.getModel();
+            model.setRowCount(0);
+
+            long totalPendapatan = 0;
+
+            for (Pesanan p : laporan) {
+                model.addRow(new Object[]{
+                    p.getTglAcara(), // Tanggal
+                    p.getIdPesanan(),
+                    p.getNamaPemesan(),
+                    p.getStatus(),
+                    p.getMetodeBayar(),
+                    p.getTotalHarga()
+                });
+                totalPendapatan += p.getTotalHarga();
+            }
+
+            totalPendapatanField.setText("Rp " + totalPendapatan);
+
+        } catch (ParseException e) {
+            // Diamkan saja jika format salah saat init, atau log error
+            System.out.println("Error parsing date: " + e.getMessage());
+        }
+    }
+    
+    private void clearMenuForm() {
+        idMenuTarget = 0; // Reset target ID
+        namaMenuField.setText("");
+        jenisMenu.setSelectedIndex(0);
+        hargaPerPorsi.setText("");
+        deskripsiMenu.setText("");
+        
+        // Ubah teks tombol Simpan kembali ke mode normal jika sebelumnya mode edit
+        simpanMenu.setText("Simpan"); 
+        namaMenuField.requestFocus();
+    }
+    
+    // --- Method untuk User ---
+    private void loadDataUser() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        List<User> users = User.getAllUsers();
+        for (User u : users) {
+            model.addRow(new Object[]{
+                u.getIdUser(),
+                u.getNama(),
+                u.getUsername(),
+                u.getRole(),
+                u.getNoTelp(),
+                u.getAlamat() // Jika di tabel ada kolom alamat, kalau tidak, bisa dihapus
+            });
+        }
     }
 
+    private void clearUserForm() {
+        idUserTarget = 0;
+        namaLengkapField.setText("");
+        usernameField.setText("");
+        passwordField.setText("");
+        jTextField5.setText(""); // Field No Telepon
+        jTextArea1.setText("");  // Field Alamat
+        rolePengguna.setSelectedIndex(0);
+        
+        simpanBtn.setText("Simpan");
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,6 +275,11 @@ public class AdminJFrame extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(229, 215, 196));
         jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTabbedPane1.setBackground(new java.awt.Color(162, 154, 124));
         jTabbedPane1.setForeground(new java.awt.Color(76, 61, 25));
@@ -191,21 +357,41 @@ public class AdminJFrame extends javax.swing.JFrame {
         hapusBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         hapusBtn.setForeground(new java.awt.Color(229, 215, 196));
         hapusBtn.setText("Hapus");
+        hapusBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusBtnActionPerformed(evt);
+            }
+        });
 
         EditBtn.setBackground(new java.awt.Color(164, 171, 57));
         EditBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         EditBtn.setForeground(new java.awt.Color(229, 215, 196));
         EditBtn.setText("Edit");
+        EditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditBtnActionPerformed(evt);
+            }
+        });
 
         resetBtn.setBackground(new java.awt.Color(96, 96, 96));
         resetBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         resetBtn.setForeground(new java.awt.Color(229, 215, 196));
         resetBtn.setText("Reset");
+        resetBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetBtnActionPerformed(evt);
+            }
+        });
 
         simpanBtn.setBackground(new java.awt.Color(53, 64, 36));
         simpanBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         simpanBtn.setForeground(new java.awt.Color(229, 215, 196));
         simpanBtn.setText("Simpan");
+        simpanBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpanBtnActionPerformed(evt);
+            }
+        });
 
         rolePengguna.setBackground(new java.awt.Color(229, 215, 196));
         rolePengguna.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -329,12 +515,22 @@ public class AdminJFrame extends javax.swing.JFrame {
                 "ID", "Nama", "Username", "Role", "no.Telp"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
 
         jButton6.setBackground(new java.awt.Color(53, 64, 36));
         jButton6.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         jButton6.setForeground(new java.awt.Color(229, 215, 196));
         jButton6.setText("Cari");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Constantia", 1, 24)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(76, 61, 25));
@@ -389,6 +585,11 @@ public class AdminJFrame extends javax.swing.JFrame {
         jenisMenu.setBackground(new java.awt.Color(229, 215, 196));
         jenisMenu.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         jenisMenu.setForeground(new java.awt.Color(76, 61, 25));
+        jenisMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jenisMenuActionPerformed(evt);
+            }
+        });
 
         hargaPerPorsi.setBackground(new java.awt.Color(229, 215, 196));
         hargaPerPorsi.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -404,21 +605,41 @@ public class AdminJFrame extends javax.swing.JFrame {
         hapusMenuBtn.setBackground(new java.awt.Color(134, 15, 15));
         hapusMenuBtn.setForeground(new java.awt.Color(229, 215, 196));
         hapusMenuBtn.setText("Hapus");
+        hapusMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusMenuBtnActionPerformed(evt);
+            }
+        });
 
         editMenuBtn.setBackground(new java.awt.Color(164, 171, 57));
         editMenuBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         editMenuBtn.setForeground(new java.awt.Color(229, 215, 196));
         editMenuBtn.setText("Edit");
+        editMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMenuBtnActionPerformed(evt);
+            }
+        });
 
         resetMenuBtn.setBackground(new java.awt.Color(96, 96, 96));
         resetMenuBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         resetMenuBtn.setForeground(new java.awt.Color(229, 215, 196));
         resetMenuBtn.setText("Reset");
+        resetMenuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetMenuBtnActionPerformed(evt);
+            }
+        });
 
         simpanMenu.setBackground(new java.awt.Color(53, 64, 36));
         simpanMenu.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         simpanMenu.setForeground(new java.awt.Color(229, 215, 196));
         simpanMenu.setText("Simpan");
+        simpanMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpanMenuActionPerformed(evt);
+            }
+        });
 
         jLabel22.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(76, 61, 25));
@@ -450,15 +671,14 @@ public class AdminJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addGap(18, 18, 18)
                             .addComponent(namaMenuField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel22)
-                                .addGap(18, 18, 18)
-                                .addComponent(jenisMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(hargaPerPorsi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel22)
+                            .addGap(18, 18, 18)
+                            .addComponent(jenisMenu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addComponent(jLabel23)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(hargaPerPorsi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(94, 94, 94)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(editMenuBtn)
@@ -524,6 +744,11 @@ public class AdminJFrame extends javax.swing.JFrame {
                 "ID", "Nama Menu", "Jenis Menu", "Harga", "Deskripsi"
             }
         ));
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTable2);
 
         jButton11.setBackground(new java.awt.Color(53, 64, 36));
@@ -588,6 +813,11 @@ public class AdminJFrame extends javax.swing.JFrame {
                 "ID", "Tanggal Acara", "Pemesan", "Lokasi", "Total(Rp)", "Status"
             }
         ));
+        tabelPesanan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelPesananMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tabelPesanan);
 
         cariPesananField.setBackground(new java.awt.Color(229, 215, 196));
@@ -601,14 +831,29 @@ public class AdminJFrame extends javax.swing.JFrame {
         cariPesananBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         cariPesananBtn.setForeground(new java.awt.Color(229, 215, 196));
         cariPesananBtn.setText("Cari");
+        cariPesananBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cariPesananBtnActionPerformed(evt);
+            }
+        });
 
         lihatDetailPesBtn.setBackground(new java.awt.Color(53, 64, 36));
         lihatDetailPesBtn.setForeground(new java.awt.Color(229, 215, 196));
         lihatDetailPesBtn.setText("Lihat Detail");
+        lihatDetailPesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lihatDetailPesBtnActionPerformed(evt);
+            }
+        });
 
         updateStatusbtn.setBackground(new java.awt.Color(164, 171, 57));
         updateStatusbtn.setForeground(new java.awt.Color(229, 215, 196));
         updateStatusbtn.setText("Update Status");
+        updateStatusbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateStatusbtnActionPerformed(evt);
+            }
+        });
 
         hasilCariPesanan.setBackground(new java.awt.Color(162, 154, 124));
         hasilCariPesanan.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -694,6 +939,11 @@ public class AdminJFrame extends javax.swing.JFrame {
         tampilkanDataBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         tampilkanDataBtn.setForeground(new java.awt.Color(229, 215, 196));
         tampilkanDataBtn.setText("Tampilkan data");
+        tampilkanDataBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tampilkanDataBtnActionPerformed(evt);
+            }
+        });
 
         jLabel18.setFont(new java.awt.Font("Constantia", 0, 18)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(76, 61, 25));
@@ -763,14 +1013,15 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
                     .addComponent(dariTanggalFirld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
-                    .addComponent(tampilkanDataBtn)
-                    .addComponent(sampaiTanggalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(tampilkanDataBtn)
+                        .addComponent(sampaiTanggalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -843,6 +1094,305 @@ public class AdminJFrame extends javax.swing.JFrame {
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void simpanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanBtnActionPerformed
+        String nama = namaLengkapField.getText();
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String role = rolePengguna.getSelectedItem().toString();
+        String noTelp = jTextField5.getText();
+        String alamat = jTextArea1.getText();
+
+        if (nama.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama, Username, dan Password wajib diisi!");
+            return;
+        }
+
+        User u = new User();
+        u.setNama(nama);
+        u.setUsername(username);
+        u.setPassword(password);
+        u.setRole(role);
+        u.setNoTelp(noTelp);
+        u.setAlamat(alamat);
+
+        if (u.tambahUser()) {
+            JOptionPane.showMessageDialog(this, "User Berhasil Ditambahkan!");
+            clearUserForm();
+            loadDataUser();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menambah user.");
+        }
+    }//GEN-LAST:event_simpanBtnActionPerformed
+
+    private void simpanMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanMenuActionPerformed
+        try {
+            String nama = namaMenuField.getText();
+            String jenis = jenisMenu.getSelectedItem().toString();
+            int harga = Integer.parseInt(hargaPerPorsi.getText());
+            String desk = deskripsiMenu.getText();
+
+            Menu menuBaru = new Menu();
+            menuBaru.setNamaMenu(nama);
+            menuBaru.setJenisMenu(jenis);
+            menuBaru.setHargaPerPorsi(harga);
+            menuBaru.setDeskripsi(desk);
+
+            if(menuBaru.tambahMenu()) {
+                JOptionPane.showMessageDialog(this, "Menu Berhasil Disimpan!");
+                loadDataMenu(); // Refresh tabel di tab sebelah
+                // Kosongkan form (opsional: buat method clearMenuForm())
+                namaMenuField.setText("");
+                hargaPerPorsi.setText("");
+                deskripsiMenu.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menyimpan menu.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_simpanMenuActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // Ambil baris yang diklik
+        int baris = jTable2.rowAtPoint(evt.getPoint());
+        
+        if (baris >= 0) {
+            // Ambil ID dari kolom ke-0 (Pastikan urutan kolom tabel Anda: ID, Nama, Jenis, Harga, Deskripsi)
+            idMenuTarget = Integer.parseInt(jTable2.getValueAt(baris, 0).toString());
+            
+            // Isi Form Input dengan data dari tabel
+            namaMenuField.setText(jTable2.getValueAt(baris, 1).toString());
+            
+            // Set ComboBox (pastikan string-nya sama persis dengan yang ada di item combobox)
+            jenisMenu.setSelectedItem(jTable2.getValueAt(baris, 2).toString());
+            
+            hargaPerPorsi.setText(jTable2.getValueAt(baris, 3).toString());
+            deskripsiMenu.setText(jTable2.getValueAt(baris, 4).toString());
+            
+            // Pindah otomatis ke Tab "Input Menu" (Tab index 2) agar user bisa langsung edit
+            jTabbedPane1.setSelectedIndex(2);
+            
+            // Opsional: Ubah teks tombol Simpan jadi "Update" biar user sadar ini mode edit
+            // Tapi karena Anda punya tombol "Edit" terpisah, kita pakai tombol Edit saja.
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void editMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuBtnActionPerformed
+        if (idMenuTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih data dari tabel 'Data Menu' terlebih dahulu!");
+            return;
+        }
+
+        try {
+            // Siapkan objek Menu dengan data baru dari form
+            Model.Menu m = new Model.Menu();
+            m.setIdMenu(idMenuTarget); // PENTING: Set ID agar tahu mana yang di-update
+            m.setNamaMenu(namaMenuField.getText());
+            m.setJenisMenu(jenisMenu.getSelectedItem().toString());
+            m.setHargaPerPorsi(Integer.parseInt(hargaPerPorsi.getText()));
+            m.setDeskripsi(deskripsiMenu.getText());
+
+            // Panggil method updateMenu dari Model
+            if (m.updateMenu()) {
+                JOptionPane.showMessageDialog(this, "Data Berhasil Diubah!");
+                loadDataMenu(); // Refresh tabel
+                clearMenuForm(); // Bersihkan form
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengubah data.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Harga harus angka!");
+        }
+    }//GEN-LAST:event_editMenuBtnActionPerformed
+
+    private void hapusMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusMenuBtnActionPerformed
+        if (idMenuTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang ingin dihapus dari tabel!");
+            return;
+        }
+
+        int konfirmasi = JOptionPane.showConfirmDialog(this, 
+                "Yakin ingin menghapus menu ini?", 
+                "Konfirmasi Hapus", 
+                JOptionPane.YES_NO_OPTION);
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            Model.Menu m = new Model.Menu();
+            m.setIdMenu(idMenuTarget);
+            
+            if (m.deleteMenu()) {
+                JOptionPane.showMessageDialog(this, "Data Berhasil Dihapus!");
+                loadDataMenu();
+                clearMenuForm();
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menghapus data.");
+            }
+        }
+    }//GEN-LAST:event_hapusMenuBtnActionPerformed
+
+    private void resetMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetMenuBtnActionPerformed
+        clearMenuForm();
+    }//GEN-LAST:event_resetMenuBtnActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int baris = jTable1.rowAtPoint(evt.getPoint());
+        if (baris >= 0) {
+            idUserTarget = Integer.parseInt(jTable1.getValueAt(baris, 0).toString());
+            
+            // Isi Form
+            namaLengkapField.setText(jTable1.getValueAt(baris, 1).toString());
+            usernameField.setText(jTable1.getValueAt(baris, 2).toString());
+            rolePengguna.setSelectedItem(jTable1.getValueAt(baris, 3).toString());
+            jTextField5.setText(jTable1.getValueAt(baris, 4).toString()); // No Telp
+            
+            // Note: Password tidak kita load balik demi keamanan
+            passwordField.setText(""); 
+            
+            // Pindah Tab otomatis
+            jTabbedPane1.setSelectedIndex(0); // Tab Input User
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void EditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBtnActionPerformed
+        if (idUserTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih user dari tabel terlebih dahulu!");
+            return;
+        }
+
+        User u = new User();
+        u.setIdUser(idUserTarget);
+        u.setNama(namaLengkapField.getText());
+        u.setUsername(usernameField.getText());
+        u.setRole(rolePengguna.getSelectedItem().toString());
+        u.setNoTelp(jTextField5.getText());
+        u.setAlamat(jTextArea1.getText());
+        
+        // Cek apakah password diisi (ingin diubah) atau kosong (tetap password lama)
+        String pass = new String(passwordField.getPassword());
+        if (!pass.isEmpty()) {
+            u.setPassword(pass);
+        }
+
+        if (u.updateUser()) {
+            JOptionPane.showMessageDialog(this, "Data User Berhasil Diubah!");
+            clearUserForm();
+            loadDataUser();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal mengubah data.");
+        }
+    }//GEN-LAST:event_EditBtnActionPerformed
+
+    private void hapusBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusBtnActionPerformed
+        if (idUserTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih user yang ingin dihapus!");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Hapus user ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            User u = new User();
+            u.setIdUser(idUserTarget);
+            if (u.deleteUser()) {
+                JOptionPane.showMessageDialog(this, "User Berhasil Dihapus!");
+                clearUserForm();
+                loadDataUser();
+            }
+        }
+    }//GEN-LAST:event_hapusBtnActionPerformed
+
+    private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
+        clearUserForm();
+    }//GEN-LAST:event_resetBtnActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        String keyword = jTextField3.getText();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        List<User> users = User.cariUser(keyword);
+        for (User u : users) {
+            model.addRow(new Object[]{
+                u.getIdUser(),
+                u.getNama(),
+                u.getUsername(),
+                u.getRole(),
+                u.getNoTelp()
+            });
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void tabelPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPesananMouseClicked
+        int baris = tabelPesanan.rowAtPoint(evt.getPoint());
+        if (baris >= 0) {
+            idPesananTarget = Integer.parseInt(tabelPesanan.getValueAt(baris, 0).toString());
+        }
+    }//GEN-LAST:event_tabelPesananMouseClicked
+
+    private void updateStatusbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateStatusbtnActionPerformed
+        if (idPesananTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih pesanan dari tabel dulu!");
+            return;
+        }
+        
+        // Panggil JDialog Update
+        new UpdateStatusBayarJDialog(this, true, idPesananTarget).setVisible(true);
+        
+        // Setelah dialog tertutup, refresh tabel admin agar status berubah
+        loadDataPesanan();
+    }//GEN-LAST:event_updateStatusbtnActionPerformed
+
+    private void cariPesananBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariPesananBtnActionPerformed
+        String keyword = cariPesananField.getText();
+        DefaultTableModel model = (DefaultTableModel) tabelPesanan.getModel();
+        model.setRowCount(0);
+        
+        List<Pesanan> list = Pesanan.cariPesanan(keyword);
+        for (Pesanan p : list) {
+            model.addRow(new Object[]{
+                p.getIdPesanan(),
+                p.getTglAcara(),
+                p.getNamaPemesan(),
+                p.getLokasiAcara(),
+                p.getTotalHarga(),
+                p.getStatus()
+            });
+        }
+    }//GEN-LAST:event_cariPesananBtnActionPerformed
+
+    private void tampilkanDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkanDataBtnActionPerformed
+        String tglAwal = dariTanggalFirld.getText();
+        String tglAkhir = sampaiTanggalField.getText();
+
+        // Panggil method helper tadi
+        tampilkanLaporan(tglAwal, tglAkhir);
+    }//GEN-LAST:event_tampilkanDataBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int konfirmasi = javax.swing.JOptionPane.showConfirmDialog(this, 
+                "Apakah Anda yakin ingin logout?", 
+                "Konfirmasi Logout", 
+                javax.swing.JOptionPane.YES_NO_OPTION);
+        
+        if (konfirmasi == javax.swing.JOptionPane.YES_OPTION) {
+            this.dispose(); // Tutup halaman Admin
+            new Auth.LoginJFrame().setVisible(true); // Kembali ke halaman Login
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jenisMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jenisMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jenisMenuActionPerformed
+
+    private void lihatDetailPesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatDetailPesBtnActionPerformed
+        if (idPesananTarget == 0) {
+            JOptionPane.showMessageDialog(this, "Pilih pesanan dari tabel dulu!");
+            return;
+        }
+        
+        // Panggil JDialog Detail
+        new DetailPesananJDialog(this, true, idPesananTarget).setVisible(true);
+    }//GEN-LAST:event_lihatDetailPesBtnActionPerformed
 
     /**
      * @param args the command line arguments

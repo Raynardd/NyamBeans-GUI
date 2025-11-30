@@ -4,6 +4,13 @@
  */
 package Auth;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import Auth.DatabaseConnection;
+
 /**
  *
  * @author Raynard
@@ -231,7 +238,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
 
     private void registPageLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registPageLabel1MouseClicked
         this.dispose();
-        new login().setVisible(true);
+        new LoginJFrame().setVisible(true);
     }//GEN-LAST:event_registPageLabel1MouseClicked
 
     private void resetPassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPassBtnActionPerformed
@@ -254,7 +261,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
 
             if (rs.next()) {
                 // Jika ada, update password
-                String hashedPassword = hashPassword(newPassword);
+                String hashedPassword = Model.User.hashPassword(newPassword);
                 String updateSql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateSql);
                 updateStmt.setString(1, hashedPassword);
@@ -265,7 +272,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
                 if (updated > 0) {
                     JOptionPane.showMessageDialog(this, "Password berhasil direset!");
                     this.dispose();
-                    new login().setVisible(true);
+                    new LoginJFrame().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Gagal memperbarui password.", "Error", JOptionPane.ERROR_MESSAGE);
                 }

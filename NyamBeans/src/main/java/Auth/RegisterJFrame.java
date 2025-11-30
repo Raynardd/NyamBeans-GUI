@@ -4,6 +4,10 @@
  */
 package Auth;
 
+import Model.User;
+import javax.swing.JOptionPane;
+import java.sql.SQLException;
+
 /**
  *
  * @author Raynard
@@ -226,60 +230,33 @@ public class RegisterJFrame extends javax.swing.JFrame {
         String password = new String(passwordField.getPassword()).trim();
         String email = emailField.getText().trim();
 
+        // 1. Validasi Input
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        Connection conn = null;
         try {
-            conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);
-
-            // --- A. INSERT USER (PANGGIL MODEL USER) ---
+            // 2. Siapkan Data User Baru
             User newUser = new User();
             newUser.setUsername(username);
-            newUser.setPassword(password); // Kirim password mentah, biar Model yang nge-hash
+            newUser.setPassword(password); // Password akan otomatis di-hash oleh setter di class User
             newUser.setEmail(email);
+            
+            // 3. Simpan ke Database
+            int resultId = newUser.registerUser();
 
-            // Panggil method yang sudah kamu buat di User.java
-            int newUserId = newUser.registerUser(conn);
-
-            if (newUserId == 0) {
-                throw new SQLException("Gagal membuat user baru.");
+            if (resultId > 0) {
+                JOptionPane.showMessageDialog(this, "Registrasi Berhasil! Silakan Login.");
+                this.dispose();
+                new LoginJFrame().setVisible(true); // Pindah ke halaman Login
+            } else {
+                JOptionPane.showMessageDialog(this, "Registrasi Gagal. Coba username lain.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-            // --- B. INSERT KARYAWAN DUMMY ---
-            String sqlKaryawan = "INSERT INTO Karyawan (nama, idJabatan, status, idUser) VALUES (?, ?, ?, ?)";
-            PreparedStatement pstKaryawan = conn.prepareStatement(sqlKaryawan);
-            pstKaryawan.setString(1, username); // Nama sementara = username
-            pstKaryawan.setInt(2, 6);           // Default ID Jabatan (misal: Staff)
-            pstKaryawan.setString(3, "aktif");
-            pstKaryawan.setInt(4, newUserId);   // Sambungkan ke ID User yang baru dibuat
-            pstKaryawan.executeUpdate();
-
-            conn.commit();
-
-            JOptionPane.showMessageDialog(this, "Registrasi berhasil! Silakan Login.");
-            dispose();
-            new login().setVisible(true);
-
-        } catch (Exception ex) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e) {
-            }
-            JOptionPane.showMessageDialog(this, "Gagal registrasi: " + ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.setAutoCommit(true);
-                }
-            } catch (SQLException e) {
-            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan database: " + e.getMessage());
+            e.printStackTrace();
         }
     }//GEN-LAST:event_registBtnActionPerformed
 
@@ -304,7 +281,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
     private void registPageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registPageLabelMouseClicked
         this.dispose();
-        new login().setVisible(true);
+        new LoginJFrame().setVisible(true);
     }//GEN-LAST:event_registPageLabelMouseClicked
 
     /**
