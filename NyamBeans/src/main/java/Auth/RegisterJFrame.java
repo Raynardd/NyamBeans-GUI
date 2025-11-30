@@ -235,6 +235,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        if (password.length() < 6 || password.length() > 8) {
+            JOptionPane.showMessageDialog(this, "Password harus 6-8 karakter!");
+            return;
+        }
 
         try {
             // 2. Siapkan Data User Baru

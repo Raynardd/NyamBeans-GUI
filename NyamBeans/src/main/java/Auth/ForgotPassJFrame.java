@@ -251,36 +251,12 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
             return;
         }
 
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            // Cek apakah user dengan email dan username ini ada
-            String checkSql = "SELECT * FROM users WHERE username = ? AND email = ?";
-            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
-            checkStmt.setString(1, username);
-            checkStmt.setString(2, email);
-            ResultSet rs = checkStmt.executeQuery();
-
-            if (rs.next()) {
-                // Jika ada, update password
-                String hashedPassword = Model.User.hashPassword(newPassword);
-                String updateSql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateSql);
-                updateStmt.setString(1, hashedPassword);
-                updateStmt.setString(2, username);
-                updateStmt.setString(3, email);
-
-                int updated = updateStmt.executeUpdate();
-                if (updated > 0) {
-                    JOptionPane.showMessageDialog(this, "Password berhasil direset!");
-                    this.dispose();
-                    new LoginJFrame().setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Gagal memperbarui password.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Email dan username tidak cocok!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Kesalahan database: " + e.getMessage());
+        if (Model.User.resetPassword(username, email, newPassword)) {
+            JOptionPane.showMessageDialog(this, "Password berhasil direset! Silakan login.");
+            this.dispose();
+            new LoginJFrame().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal reset password. Username atau Email mungkin salah.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_resetPassBtnActionPerformed
 

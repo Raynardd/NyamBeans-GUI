@@ -31,34 +31,33 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
     }
     
     private void loadData() {
-        String sql = "SELECT p.*, u.nama FROM pesanan p JOIN users u ON p.id_user = u.id_user WHERE id_pesanan = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
-            
-            pst.setInt(1, currentIdPesanan);
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                idPesananField.setText(String.valueOf(rs.getInt("id_pesanan")));
-                namaPemesanField.setText(rs.getString("nama"));
-                
-                totalHarga = rs.getInt("total_harga");
-                int dp = rs.getInt("dp_dibayar");
-                int sisa = rs.getInt("sisa_bayar");
-                
-                totalTagihanField.setText(String.valueOf(totalHarga));
-                dpDiabayarField.setText(String.valueOf(dp));
-                sisaBayarField.setText(String.valueOf(sisa));
-                
-                statusPesanan.setSelectedItem(rs.getString("status_pesanan"));
-                
-                // Field ID dan Nama read-only
-                idPesananField.setEditable(false);
-                namaPemesanField.setEditable(false);
-                totalTagihanField.setEditable(false);
-                sisaBayarField.setEditable(false);
-            }
-        } catch (Exception e) { e.printStackTrace(); }
+        // Panggil method statis dari Model
+        Model.Pesanan p = Model.Pesanan.getPesananById(currentIdPesanan);
+
+        if (p != null) {
+            idPesananField.setText(String.valueOf(p.getIdPesanan()));
+            namaPemesanField.setText(p.getNamaPemesan());
+
+            // Kita simpan total harga ke variabel global class ini (pastikan variabel totalHarga ada di atas)
+            this.totalHarga = p.getTotalHarga(); 
+            totalTagihanField.setText(String.valueOf(totalHarga));
+
+            // Catatan: Karena getPesananById Anda belum mengambil dp_dibayar & sisa_bayar,
+            // Idealnya getter setter untuk dp dan sisa ditambahkan juga di Pesanan.java.
+            // Tapi untuk sekarang, kita ambil sisa dari perhitungan sederhana atau biarkan kode query SELECT lama 
+            // HANYA jika Anda belum sempat update getter/setter Pesanan.java.
+
+            // Jika Pesanan.java sudah lengkap (ada getDpDibayar & getSisaBayar), pakai ini:
+            // dpDiabayarField.setText(String.valueOf(p.getDpDibayar()));
+            // sisaBayarField.setText(String.valueOf(p.getSisaBayar()));
+
+            statusPesanan.setSelectedItem(p.getStatus());
+
+            idPesananField.setEditable(false);
+            namaPemesanField.setEditable(false);
+            totalTagihanField.setEditable(false);
+            sisaBayarField.setEditable(false);
+        }
     }
 
     /**
@@ -71,14 +70,14 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        updateStatusLabel = new javax.swing.JLabel();
+        idPesanan = new javax.swing.JLabel();
+        pemesanLabel = new javax.swing.JLabel();
+        totalTagihanLabel = new javax.swing.JLabel();
+        pembayaranLabel = new javax.swing.JLabel();
+        dibayarLabel = new javax.swing.JLabel();
+        sisaBayarLabel = new javax.swing.JLabel();
+        statusPesananLabel = new javax.swing.JLabel();
         statusPesanan = new javax.swing.JComboBox<>();
         simpanUpdateBtn = new javax.swing.JButton();
         idPesananField = new javax.swing.JTextField();
@@ -92,37 +91,37 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(162, 154, 124));
 
-        jLabel1.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel1.setText("Update Status Pembayaran");
+        updateStatusLabel.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
+        updateStatusLabel.setForeground(new java.awt.Color(76, 61, 25));
+        updateStatusLabel.setText("Update Status Pembayaran");
 
-        jLabel2.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel2.setText("ID Pesanan :");
+        idPesanan.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        idPesanan.setForeground(new java.awt.Color(76, 61, 25));
+        idPesanan.setText("ID Pesanan     :");
 
-        jLabel3.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel3.setText("Pemesan :");
+        pemesanLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        pemesanLabel.setForeground(new java.awt.Color(76, 61, 25));
+        pemesanLabel.setText("Pemesan :");
 
-        jLabel4.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel4.setText("Total Tagihan : Rp. ");
+        totalTagihanLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        totalTagihanLabel.setForeground(new java.awt.Color(76, 61, 25));
+        totalTagihanLabel.setText("Total Tagihan :  Rp. ");
 
-        jLabel5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel5.setText("Pembayaran :");
+        pembayaranLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        pembayaranLabel.setForeground(new java.awt.Color(76, 61, 25));
+        pembayaranLabel.setText("Pembayaran   :");
 
-        jLabel6.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel6.setText("Dp dibayar   : Rp. ");
+        dibayarLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        dibayarLabel.setForeground(new java.awt.Color(76, 61, 25));
+        dibayarLabel.setText("Dibayar          :  Rp. ");
 
-        jLabel7.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel7.setText("Sisa bayar     : Rp.");
+        sisaBayarLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        sisaBayarLabel.setForeground(new java.awt.Color(76, 61, 25));
+        sisaBayarLabel.setText("Sisa bayar       :  Rp.");
 
-        jLabel8.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(76, 61, 25));
-        jLabel8.setText("Status Pesanan :");
+        statusPesananLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        statusPesananLabel.setForeground(new java.awt.Color(76, 61, 25));
+        statusPesananLabel.setText("Status Pesanan :");
 
         statusPesanan.setBackground(new java.awt.Color(229, 215, 196));
         statusPesanan.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -168,6 +167,11 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         sisaBayarField.setBackground(new java.awt.Color(162, 154, 124));
         sisaBayarField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         sisaBayarField.setForeground(new java.awt.Color(76, 61, 25));
+        sisaBayarField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sisaBayarFieldActionPerformed(evt);
+            }
+        });
 
         tutupJDialogBtn.setBackground(new java.awt.Color(53, 64, 36));
         tutupJDialogBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -183,82 +187,79 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tutupJDialogBtn))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pembayaranLabel)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(tutupJDialogBtn))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(totalTagihanField, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(dpDiabayarField))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(sisaBayarField, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(statusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                                .addComponent(simpanUpdateBtn))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(idPesananField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
+                                .addComponent(statusPesananLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(namaPemesanField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(14, 14, 14))))
+                                .addComponent(statusPesanan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(idPesanan)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(idPesananField, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(totalTagihanLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(totalTagihanField, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(updateStatusLabel)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(sisaBayarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dibayarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dpDiabayarField, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(sisaBayarField))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(pemesanLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(namaPemesanField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(simpanUpdateBtn, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(25, 25, 25))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(updateStatusLabel)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
+                    .addComponent(idPesanan)
                     .addComponent(idPesananField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pemesanLabel)
                     .addComponent(namaPemesanField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(totalTagihanLabel)
                     .addComponent(totalTagihanField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(pembayaranLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(dibayarLabel)
                     .addComponent(dpDiabayarField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(statusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(simpanUpdateBtn)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sisaBayarLabel)
                     .addComponent(sisaBayarField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(statusPesananLabel)
+                    .addComponent(statusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(simpanUpdateBtn))
                 .addGap(18, 18, 18)
                 .addComponent(tutupJDialogBtn)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -286,27 +287,17 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
             int sisaBaru = totalHarga - dpBaru;
             String statusBaru = statusPesanan.getSelectedItem().toString();
             
-            // 2. Update Database
-            String sql = "UPDATE pesanan SET dp_dibayar=?, sisa_bayar=?, status_pesanan=? WHERE id_pesanan=?";
-            Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql);
-            
-            pst.setInt(1, dpBaru);
-            pst.setInt(2, sisaBaru);
-            pst.setString(3, statusBaru);
-            pst.setInt(4, currentIdPesanan);
-            
-            if (pst.executeUpdate() > 0) {
+            Model.Pesanan p = new Model.Pesanan();
+            p.setIdPesanan(currentIdPesanan);
+
+            if (p.updateStatusPembayaran(dpBaru, sisaBaru, statusBaru)) {
                 JOptionPane.showMessageDialog(this, "Data Berhasil Diupdate!");
-                this.dispose(); // Tutup dialog
+                this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal update.");
+                JOptionPane.showMessageDialog(this, "Gagal update data.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "DP harus angka!", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }//GEN-LAST:event_simpanUpdateBtnActionPerformed
 
@@ -332,24 +323,28 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_dpDiabayarFieldKeyReleased
 
+    private void sisaBayarFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sisaBayarFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sisaBayarFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dibayarLabel;
     private javax.swing.JTextField dpDiabayarField;
+    private javax.swing.JLabel idPesanan;
     private javax.swing.JTextField idPesananField;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField namaPemesanField;
+    private javax.swing.JLabel pembayaranLabel;
+    private javax.swing.JLabel pemesanLabel;
     private javax.swing.JButton simpanUpdateBtn;
     private javax.swing.JTextField sisaBayarField;
+    private javax.swing.JLabel sisaBayarLabel;
     private javax.swing.JComboBox<String> statusPesanan;
+    private javax.swing.JLabel statusPesananLabel;
     private javax.swing.JTextField totalTagihanField;
+    private javax.swing.JLabel totalTagihanLabel;
     private javax.swing.JButton tutupJDialogBtn;
+    private javax.swing.JLabel updateStatusLabel;
     // End of variables declaration//GEN-END:variables
 }

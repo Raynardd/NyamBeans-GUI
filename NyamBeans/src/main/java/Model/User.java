@@ -14,8 +14,8 @@ public class User {
     private String password;
     private String role; // "Admin" atau "User"
     private String noTelp;
+    private String email;
     private String alamat;
-    private String email; // Opsional jika di DB tidak ada kolom email, bisa diabaikan
 
     public User() {}
 
@@ -38,11 +38,11 @@ public class User {
     public String getNoTelp() { return noTelp; }
     public void setNoTelp(String noTelp) { this.noTelp = noTelp; }
 
-    public String getAlamat() { return alamat; }
-    public void setAlamat(String alamat) { this.alamat = alamat; }
-    
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    
+    public String getAlamat() { return alamat; }
+    public void setAlamat(String alamat) { this.alamat = alamat; }
 
     // --- METHOD UTILITY ---
     public static String hashPassword(String password) {
@@ -61,7 +61,7 @@ public class User {
     // 1. CREATE: Tambah User Baru (Versi Admin)
     public boolean tambahUser() {
         // Query disesuaikan dengan kolom yang ada di database Anda
-        String sql = "INSERT INTO users (nama, username, password, role, no_telp, alamat) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (nama, username, password, role, no_telp, email, alamat) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
             
@@ -70,7 +70,8 @@ public class User {
             pst.setString(3, this.password); // Password sudah di-hash
             pst.setString(4, this.role);
             pst.setString(5, this.noTelp);
-            pst.setString(6, this.alamat);
+            pst.setString(6, this.email);
+            pst.setString(7, this.alamat);
             
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -95,6 +96,7 @@ public class User {
                 // Password tidak perlu ditampilkan
                 u.setRole(rs.getString("role"));
                 u.setNoTelp(rs.getString("no_telp"));
+                u.setEmail(rs.getString("email"));
                 u.setAlamat(rs.getString("alamat"));
                 listUser.add(u);
             }
@@ -107,7 +109,7 @@ public class User {
         // Cek apakah password diubah atau tidak
         boolean isPasswordChanged = (this.password != null && !this.password.isEmpty());
         
-        String sql = "UPDATE users SET nama=?, username=?, role=?, no_telp=?, alamat=?";
+        String sql = "UPDATE users SET nama=?, username=?, role=?, no_telp=?, email=?, alamat=?";
         if (isPasswordChanged) {
             sql += ", password=?"; // Tambah update password jika ada
         }
@@ -120,13 +122,14 @@ public class User {
             pst.setString(2, this.username);
             pst.setString(3, this.role);
             pst.setString(4, this.noTelp);
-            pst.setString(5, this.alamat);
+            pst.setString(5, this.email);
+            pst.setString(6, this.alamat);
             
             if (isPasswordChanged) {
-                pst.setString(6, this.password); // Password baru (hashed)
-                pst.setInt(7, this.idUser);
+                pst.setString(7, this.password); // Password baru (hashed)
+                pst.setInt(8, this.idUser);
             } else {
-                pst.setInt(6, this.idUser);
+                pst.setInt(7, this.idUser);
             }
             
             return pst.executeUpdate() > 0;
@@ -164,6 +167,7 @@ public class User {
                 u.setUsername(rs.getString("username"));
                 u.setRole(rs.getString("role"));
                 u.setNoTelp(rs.getString("no_telp"));
+                u.setEmail(rs.getString("email"));
                 u.setAlamat(rs.getString("alamat"));
                 listUser.add(u);
             }
@@ -186,6 +190,9 @@ public class User {
                 user.setUsername(rs.getString("username"));
                 user.setRole(rs.getString("role"));
                 user.setNama(rs.getString("nama"));
+                user.setNoTelp(rs.getString("no_telp"));
+                user.setEmail(rs.getString("email"));
+                user.setAlamat(rs.getString("alamat"));
                 return user;
             }
         } catch (Exception e) { e.printStackTrace(); }
@@ -194,8 +201,8 @@ public class User {
     
     public int registerUser() throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
-        // Query insert khusus pelanggan (Role default 'Pelanggan', NoTelp & Alamat default '-')
-        String sql = "INSERT INTO users (username, password, email, role, nama, no_telp, alamat) VALUES (?, ?, ?, 'Pelanggan', ?, '-', '-')";
+        // Query insert khusus pelanggan (Role default 'User', NoTelp & Alamat default '-')
+        String sql = "INSERT INTO users (username, password, email, role, nama, no_telp, alamat) VALUES (?, ?, ?, 'User', ?, '-', '-')";
         
         PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         pst.setString(1, this.username);
@@ -212,5 +219,28 @@ public class User {
             }
         }
         return 0; // Gagal
+    }
+    
+    public static boolean resetPassword(String username, String email, String newPassword) {
+        // Hash password baru
+        String hashedPassword = hashPassword(newPassword);
+
+        // Query langsung update (jika username & email cocok, password akan berubah)
+        String sql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, hashedPassword);
+            pst.setString(2, username);
+            pst.setString(3, email);
+
+            int affectedRows = pst.executeUpdate();
+            return affectedRows > 0; // Mengembalikan true jika ada data yang terupdate
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

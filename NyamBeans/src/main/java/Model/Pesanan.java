@@ -232,4 +232,21 @@ public class Pesanan {
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }
+
+    public boolean updateStatusPembayaran(int dp, int sisa, String statusBaru) {
+        String sql = "UPDATE pesanan SET dp_dibayar=?, sisa_bayar=?, status_pesanan=? WHERE id_pesanan=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setInt(1, dp);
+            pst.setInt(2, sisa);
+            pst.setString(3, statusBaru);
+            pst.setInt(4, this.idPesanan); // Menggunakan ID dari objek ini
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
