@@ -1155,17 +1155,10 @@
                                   </Group>
                                   <Component id="jScrollPane5" min="-2" pref="538" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lihatDetailPesBtn" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="updateStatusbtn" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="namaPemesanLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="hasilCariPesanan" min="-2" pref="206" max="-2" attributes="0"/>
-                                  </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lihatDetailPesBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
+                                  <Component id="updateStatusbtn" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="84" max="32767" attributes="0"/>
@@ -1184,17 +1177,12 @@
                               <Component id="cariPesananField" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="cariPesananBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="namaPemesanLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="hasilCariPesanan" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lihatDetailPesBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="updateStatusbtn" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="54" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="87" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1238,7 +1226,7 @@
                             <Column editable="true" title="Tanggal Acara" type="java.lang.Object"/>
                             <Column editable="true" title="Pemesan" type="java.lang.Object"/>
                             <Column editable="true" title="Lokasi" type="java.lang.Object"/>
-                            <Column editable="true" title="Total(Rp)" type="java.lang.Object"/>
+                            <Column editable="true" title="Total (Rp)" type="java.lang.Object"/>
                             <Column editable="true" title="Status" type="java.lang.Object"/>
                           </Table>
                         </Property>
@@ -1296,17 +1284,6 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="namaPemesanLabel">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Constantia" size="12" style="0"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="19" green="3d" red="4c" type="rgb"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Nama Pemesan  :"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JButton" name="cariPesananBtn">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -1351,19 +1328,6 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateStatusbtnActionPerformed"/>
                   </Events>
-                </Component>
-                <Component class="javax.swing.JTextField" name="hasilCariPesanan">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="7c" green="9a" red="a2" type="rgb"/>
-                    </Property>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Constantia" size="12" style="0"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="19" green="3d" red="4c" type="rgb"/>
-                    </Property>
-                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -1608,6 +1572,7 @@
                             </Column>
                           </TableColumnModel>
                         </Property>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                           <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
@@ -1628,6 +1593,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="totalPendapatanField">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="7c" green="9a" red="a2" type="rgb"/>
                     </Property>

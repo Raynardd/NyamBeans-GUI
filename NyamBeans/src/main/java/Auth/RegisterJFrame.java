@@ -21,6 +21,7 @@ public class RegisterJFrame extends javax.swing.JFrame {
      */
     public RegisterJFrame() {
         initComponents();
+        
     }
 
     /**
@@ -79,6 +80,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
         emailLabel.setText("Email");
 
         emailField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        emailField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailFieldActionPerformed(evt);
+            }
+        });
 
         registBtn.setBackground(new java.awt.Color(53, 64, 36));
         registBtn.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
@@ -219,10 +225,12 @@ public class RegisterJFrame extends javax.swing.JFrame {
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        registBtn.doClick();
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void registBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registBtnActionPerformed
@@ -233,6 +241,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
         // 1. Validasi Input
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+            JOptionPane.showMessageDialog(this, "Format Email tidak valid! (Harus mengandung '@' dan tidak di awal/akhir)");
             return;
         }
         
@@ -288,6 +301,11 @@ public class RegisterJFrame extends javax.swing.JFrame {
         this.dispose();
         new LoginJFrame().setVisible(true);
     }//GEN-LAST:event_registPageLabelMouseClicked
+
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+        // TODO add your handling code here:
+        usernameField.requestFocus();
+    }//GEN-LAST:event_emailFieldActionPerformed
 
     /**
      * @param args the command line arguments

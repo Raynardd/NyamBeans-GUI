@@ -279,11 +279,9 @@ public class AdminJFrame extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         tabelPesanan = new javax.swing.JTable();
         cariPesananField = new javax.swing.JTextField();
-        namaPemesanLabel = new javax.swing.JLabel();
         cariPesananBtn = new javax.swing.JButton();
         lihatDetailPesBtn = new javax.swing.JButton();
         updateStatusbtn = new javax.swing.JButton();
-        hasilCariPesanan = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         laporanKeuanganLabel = new javax.swing.JLabel();
         dariTglLabel = new javax.swing.JLabel();
@@ -845,7 +843,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tanggal Acara", "Pemesan", "Lokasi", "Total(Rp)", "Status"
+                "ID", "Tanggal Acara", "Pemesan", "Lokasi", "Total (Rp)", "Status"
             }
         ));
         tabelPesanan.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -857,10 +855,6 @@ public class AdminJFrame extends javax.swing.JFrame {
 
         cariPesananField.setBackground(new java.awt.Color(229, 215, 196));
         cariPesananField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-
-        namaPemesanLabel.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        namaPemesanLabel.setForeground(new java.awt.Color(76, 61, 25));
-        namaPemesanLabel.setText("Nama Pemesan  :");
 
         cariPesananBtn.setBackground(new java.awt.Color(53, 64, 36));
         cariPesananBtn.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -890,10 +884,6 @@ public class AdminJFrame extends javax.swing.JFrame {
             }
         });
 
-        hasilCariPesanan.setBackground(new java.awt.Color(162, 154, 124));
-        hasilCariPesanan.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
-        hasilCariPesanan.setForeground(new java.awt.Color(76, 61, 25));
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -909,15 +899,10 @@ public class AdminJFrame extends javax.swing.JFrame {
                             .addComponent(cariPesananBtn)
                             .addGap(151, 151, 151))
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(lihatDetailPesBtn)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(updateStatusbtn))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                            .addComponent(namaPemesanLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(hasilCariPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(lihatDetailPesBtn)
+                        .addGap(116, 116, 116)
+                        .addComponent(updateStatusbtn)))
                 .addContainerGap(84, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -931,15 +916,11 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cariPesananField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cariPesananBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(namaPemesanLabel)
-                    .addComponent(hasilCariPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lihatDetailPesBtn)
                     .addComponent(updateStatusbtn))
-                .addGap(0, 54, Short.MAX_VALUE))
+                .addGap(0, 87, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Daftar Pesanan", jPanel6);
@@ -994,12 +975,14 @@ public class AdminJFrame extends javax.swing.JFrame {
                 "Tgl Transaksi", "ID", "Pemesan", "Status", "Metode bayar", "Pendapatan"
             }
         ));
+        tabelDataKeuangan.setEnabled(false);
         jScrollPane6.setViewportView(tabelDataKeuangan);
 
         totalPendapatanLabel.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
         totalPendapatanLabel.setForeground(new java.awt.Color(76, 61, 25));
         totalPendapatanLabel.setText("Total Pendapatan :  Rp.");
 
+        totalPendapatanField.setEditable(false);
         totalPendapatanField.setBackground(new java.awt.Color(162, 154, 124));
         totalPendapatanField.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
         totalPendapatanField.setForeground(new java.awt.Color(76, 61, 25));
@@ -1112,18 +1095,22 @@ public class AdminJFrame extends javax.swing.JFrame {
 
     private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
         // TODO add your handling code here:
+        usernameField.requestFocus();
     }//GEN-LAST:event_namaLengkapFieldActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        noTelpField.requestFocus();
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
         // TODO add your handling code here:
+        emailField.requestFocus();
     }//GEN-LAST:event_noTelpFieldActionPerformed
 
     private void simpanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanBtnActionPerformed
@@ -1131,9 +1118,19 @@ public class AdminJFrame extends javax.swing.JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
         String role = rolePenggunaComboBox.getSelectedItem().toString();
-        String noTelp = noTelpField.getText();
-        String email = emailField.getText();
+        String noTelp = noTelpField.getText().trim();
+        String email = emailField.getText().trim();
         String alamat = alamatTextArea.getText();
+        
+        if (!noTelp.matches("\\d+")) { // Regex: \d+ artinya hanya digit angka
+            JOptionPane.showMessageDialog(this, "No. Telepon harus berupa angka!");
+            return;
+        }
+        
+        if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+            JOptionPane.showMessageDialog(this, "Format Email tidak valid!");
+            return;
+        }
         
         if (password.length() < 6 || password.length() > 8) {
             JOptionPane.showMessageDialog(this, 
@@ -1325,7 +1322,7 @@ public class AdminJFrame extends javax.swing.JFrame {
 
     private void updateStatusbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateStatusbtnActionPerformed
         if (idPesananTarget == 0) {
-            JOptionPane.showMessageDialog(this, "Pilih pesanan dari tabel dulu!");
+            JOptionPane.showMessageDialog(this, "Pilih Pelanggan dari tabel dulu!");
             return;
         }
         
@@ -1394,6 +1391,7 @@ public class AdminJFrame extends javax.swing.JFrame {
 
     private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
         // TODO add your handling code here:
+        alamatTextArea.requestFocus();
     }//GEN-LAST:event_emailFieldActionPerformed
 
     private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassCheckActionPerformed
@@ -1456,7 +1454,6 @@ public class AdminJFrame extends javax.swing.JFrame {
     private javax.swing.JButton hapusMenuBtn;
     private javax.swing.JTextField hargaPerPorsiField;
     private javax.swing.JLabel hargaPerPorsiLabel;
-    private javax.swing.JTextField hasilCariPesanan;
     private javax.swing.JLabel hasilLaporanLabel;
     private javax.swing.JLabel inputMenuLabel;
     private javax.swing.JLabel inputUserLabel;
@@ -1485,7 +1482,6 @@ public class AdminJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel namaLengkapLabel;
     private javax.swing.JTextField namaMenuField;
     private javax.swing.JLabel namaMenuLabel;
-    private javax.swing.JLabel namaPemesanLabel;
     private javax.swing.JTextField noTelpField;
     private javax.swing.JLabel noTelpLabel;
     private javax.swing.JPasswordField passwordField;

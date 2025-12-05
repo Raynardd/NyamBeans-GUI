@@ -318,6 +318,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        noTelpField.requestFocus();
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void simpanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanButtonActionPerformed
@@ -326,7 +327,8 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         String username = usernameField.getText();
         String pass = new String(passwordField.getPassword());
         String role = rolePenggunaComboBox.getSelectedItem().toString();
-        String telp = noTelpField.getText();
+        String telp = noTelpField.getText().trim();
+        String email = emailField.getText().trim();
         String alamat = alamatTextArea.getText();
 
         if (!pass.isEmpty()) {
@@ -341,6 +343,16 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         
         if (nama.isEmpty() || username.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama dan Username wajib diisi!");
+            return;
+        }
+        
+        if (!telp.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "No. Telepon harus berupa angka!");
+            return;
+        }
+
+        if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+            JOptionPane.showMessageDialog(this, "Format Email tidak valid!");
             return;
         }
 
@@ -394,14 +406,17 @@ public class DetailUserJDialog extends javax.swing.JDialog {
 
     private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
         // TODO add your handling code here:
+        usernameField.requestFocus();
     }//GEN-LAST:event_namaLengkapFieldActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
+        emailField.requestFocus();
     }//GEN-LAST:event_noTelpFieldActionPerformed
 
     private void batalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batalButtonActionPerformed
@@ -421,6 +436,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
 
     private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
         // TODO add your handling code here:
+        alamatTextArea.requestFocus();
     }//GEN-LAST:event_emailFieldActionPerformed
 
     /**

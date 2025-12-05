@@ -209,6 +209,11 @@ public class UserJFrame extends javax.swing.JFrame {
         namaLengkapField.setBackground(new java.awt.Color(229, 215, 196));
         namaLengkapField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         namaLengkapField.setForeground(new java.awt.Color(76, 61, 25));
+        namaLengkapField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                namaLengkapFieldActionPerformed(evt);
+            }
+        });
 
         usernameField.setBackground(new java.awt.Color(229, 215, 196));
         usernameField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
@@ -222,6 +227,11 @@ public class UserJFrame extends javax.swing.JFrame {
         noTelpField.setBackground(new java.awt.Color(229, 215, 196));
         noTelpField.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
         noTelpField.setForeground(new java.awt.Color(76, 61, 25));
+        noTelpField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noTelpFieldActionPerformed(evt);
+            }
+        });
 
         alamatTextArea.setBackground(new java.awt.Color(229, 215, 196));
         alamatTextArea.setColumns(20);
@@ -439,6 +449,7 @@ public class UserJFrame extends javax.swing.JFrame {
                 "Nama Menu", "Harga/porsi", "Jumlah", "Subtotal"
             }
         ));
+        jTable1.setEnabled(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -646,6 +657,7 @@ public class UserJFrame extends javax.swing.JFrame {
                 "Tanggal Acara", "Menu", "Total harga", "Status"
             }
         ));
+        tabelRiwayatPesanan.setEnabled(false);
         jScrollPane6.setViewportView(tabelRiwayatPesanan);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -719,36 +731,67 @@ public class UserJFrame extends javax.swing.JFrame {
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         if (currentUser == null) return;
         
-        currentUser.setNama(namaLengkapField.getText());
-        currentUser.setUsername(usernameField.getText());
-        currentUser.setNoTelp(noTelpField.getText());
-        currentUser.setAlamat(alamatTextArea.getText());
+        // ambil data dari form
+        String nama = namaLengkapField.getText().trim();
+        String username = usernameField.getText().trim();
+        String noTelp = noTelpField.getText().trim();
+        String email = emailField.getText().trim();
+        String alamat = alamatTextArea.getText().trim();
+        // ambil password dari JPasswordField
+        String pass = new String(passwordField.getPassword()).trim(); 
         
-        String pass = passwordField.getText();
+        if (nama.isEmpty() || username.isEmpty() || noTelp.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama, Username, No. Telp, dan Email wajib diisi!");
+            return;
+        }
+        
+        // validasi No. Telepon harus angka
+        if (!noTelp.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "No. Telepon harus berupa angka!");
+            return;
+        }
+        
+        // validasi Email ada @, tidak di awal/akhir
+        if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+            JOptionPane.showMessageDialog(this, "Format Email tidak valid!");
+            return;
+        }
+        
+        // validasi password hanya jika diisi
         if (!pass.isEmpty()) {
             if (pass.length() < 6 || pass.length() > 8) {
                 JOptionPane.showMessageDialog(this, 
                     "Password baru harus 6 sampai 8 karakter!", 
                     "Password Tidak Valid", 
                     JOptionPane.WARNING_MESSAGE);
-                return; 
+                return;
             }
+            // jika lolos, set password baru (otomatis di-hash di Model)
             currentUser.setPassword(pass);
         }
         
+        // set data lain ke objek User
+        currentUser.setNama(nama);
+        currentUser.setUsername(username);
+        currentUser.setNoTelp(noTelp);
+        currentUser.setEmail(email);
+        currentUser.setAlamat(alamat);
+
         if (currentUser.updateUser()) {
             JOptionPane.showMessageDialog(this, "Profil Berhasil Diupdate!");
+
             usernameLabel1.setText("Halo, " + currentUser.getNama() + "!");
             
-            // Opsional: Kosongkan field password setelah sukses biar aman
+            // kosongin field password agar aman & bersih
             passwordField.setText(""); 
         } else {
-            JOptionPane.showMessageDialog(this, "Gagal update profil.");
+            JOptionPane.showMessageDialog(this, "Gagal update profil. Cek koneksi atau username mungkin sudah dipakai.");
         }
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -834,6 +877,7 @@ public class UserJFrame extends javax.swing.JFrame {
 
     private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
         // TODO add your handling code here:
+        alamatTextArea.requestFocus();
     }//GEN-LAST:event_emailFieldActionPerformed
 
     private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassCheckActionPerformed
@@ -849,7 +893,18 @@ public class UserJFrame extends javax.swing.JFrame {
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        noTelpField.requestFocus();
     }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
+        // TODO add your handling code here:
+        usernameField.requestFocus();
+    }//GEN-LAST:event_namaLengkapFieldActionPerformed
+
+    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
+        // TODO add your handling code here:
+        emailField.requestFocus();
+    }//GEN-LAST:event_noTelpFieldActionPerformed
 
     /**
      * @param args the command line arguments

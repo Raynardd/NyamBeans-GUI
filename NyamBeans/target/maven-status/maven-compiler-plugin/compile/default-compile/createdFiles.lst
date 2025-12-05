@@ -3,7 +3,7 @@ Auth\RegisterJFrame$2.class
 Admin\AdminJFrame$13.class
 Admin\AdminJFrame$23.class
 Auth\ForgotPassJFrame.class
-Auth\NyamBeans.class
+User\UserJFrame$13.class
 Admin\DetailUserJDialog$10.class
 User\UserJFrame$3.class
 Admin\DetailUserJDialog$6.class
@@ -21,13 +21,16 @@ Admin\AdminJFrame$10.class
 Admin\AdminJFrame$6.class
 Model\Pesanan.class
 Admin\UpdateStatusBayarJDialog$5.class
+Auth\ForgotPassJFrame$8.class
 Auth\LoginJFrame$5.class
+User\UserJFrame$12.class
 Admin\AdminJFrame$24.class
 Admin\UpdateStatusBayarJDialog$2.class
 User\UserJFrame$4.class
 User\UserJFrame.class
 Admin\AdminJFrame$12.class
 Auth\LoginJFrame.class
+Auth\RegisterJFrame$8.class
 Auth\LoginJFrame$2.class
 Admin\AdminJFrame$8.class
 User\UserJFrame$7.class

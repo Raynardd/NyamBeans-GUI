@@ -81,6 +81,11 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
         emailLabel.setText("Email");
 
         emailField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        emailField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailFieldActionPerformed(evt);
+            }
+        });
 
         clearBtn.setBackground(new java.awt.Color(53, 64, 36));
         clearBtn.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
@@ -211,10 +216,12 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        resetPassBtn.doClick();
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
@@ -250,6 +257,16 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        if (!email.contains("@") || email.startsWith("@") || email.endsWith("@")) {
+            JOptionPane.showMessageDialog(this, "Format Email tidak valid!");
+            return;
+        }
+        
+        if (newPassword.length() < 6 || newPassword.length() > 8) {
+            JOptionPane.showMessageDialog(this, "Password baru harus 6-8 karakter!");
+            return;
+        }
 
         if (Model.User.resetPassword(username, email, newPassword)) {
             JOptionPane.showMessageDialog(this, "Password berhasil direset! Silakan login.");
@@ -259,6 +276,11 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Gagal reset password. Username atau Email mungkin salah.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_resetPassBtnActionPerformed
+
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+        // TODO add your handling code here:
+        usernameField.requestFocus();
+    }//GEN-LAST:event_emailFieldActionPerformed
 
     /**
      * @param args the command line arguments
