@@ -87,6 +87,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         showPasswordCheckBox = new javax.swing.JCheckBox();
         forgotPassLabel = new javax.swing.JLabel();
         judulLabel = new javax.swing.JLabel();
+        copyright5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -179,6 +180,10 @@ public class LoginJFrame extends javax.swing.JFrame {
         judulLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         judulLabel.setText("NyamBeans");
 
+        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright5.setForeground(new java.awt.Color(76, 61, 25));
+        copyright5.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -211,6 +216,10 @@ public class LoginJFrame extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addComponent(showPasswordCheckBox)))
                 .addGap(116, 116, 116))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(copyright5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +247,8 @@ public class LoginJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registPageLabel)
                     .addComponent(isHaveAccLabel))
-                .addGap(28, 28, 28))
+                .addGap(13, 13, 13)
+                .addComponent(copyright5))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,6 +340,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
+    private javax.swing.JLabel copyright5;
     private javax.swing.JLabel forgotPassLabel;
     private javax.swing.JLabel isHaveAccLabel;
     private javax.swing.JPanel jPanel1;

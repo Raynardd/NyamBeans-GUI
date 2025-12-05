@@ -86,6 +86,7 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         dpDiabayarField = new javax.swing.JTextField();
         sisaBayarField = new javax.swing.JTextField();
         tutupJDialogBtn = new javax.swing.JButton();
+        copyright5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -183,23 +184,28 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
             }
         });
 
+        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright5.setForeground(new java.awt.Color(76, 61, 25));
+        copyright5.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(copyright5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(tutupJDialogBtn))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pembayaranLabel)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(statusPesananLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(statusPesanan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(statusPesanan, 0, 133, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addComponent(idPesanan)
@@ -258,7 +264,9 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
                     .addComponent(statusPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(simpanUpdateBtn))
                 .addGap(18, 18, 18)
-                .addComponent(tutupJDialogBtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tutupJDialogBtn)
+                    .addComponent(copyright5))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -329,6 +337,7 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel copyright5;
     private javax.swing.JLabel dibayarLabel;
     private javax.swing.JTextField dpDiabayarField;
     private javax.swing.JLabel idPesanan;

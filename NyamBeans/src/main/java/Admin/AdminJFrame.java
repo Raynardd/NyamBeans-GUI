@@ -247,12 +247,14 @@ public class AdminJFrame extends javax.swing.JFrame {
         emailField = new javax.swing.JTextField();
         emailLabel = new javax.swing.JLabel();
         showPassCheck = new javax.swing.JCheckBox();
+        copyright5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         cariField = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         dataUserTable = new javax.swing.JTable();
         cariButton = new javax.swing.JButton();
         dataUserLabel = new javax.swing.JLabel();
+        copyright4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         inputMenuLabel = new javax.swing.JLabel();
         namaMenuLabel = new javax.swing.JLabel();
@@ -268,12 +270,14 @@ public class AdminJFrame extends javax.swing.JFrame {
         jenisMenuLabel = new javax.swing.JLabel();
         hargaPerPorsiLabel = new javax.swing.JLabel();
         deskripsiLabel = new javax.swing.JLabel();
+        copyright3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cariMenuField = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         dataMenuTable = new javax.swing.JTable();
         cariMenuButton = new javax.swing.JButton();
         dataMenuLabel = new javax.swing.JLabel();
+        copyright2 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         daftarPesananLabel = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -282,6 +286,7 @@ public class AdminJFrame extends javax.swing.JFrame {
         cariPesananBtn = new javax.swing.JButton();
         lihatDetailPesBtn = new javax.swing.JButton();
         updateStatusbtn = new javax.swing.JButton();
+        copyright1 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         laporanKeuanganLabel = new javax.swing.JLabel();
         dariTglLabel = new javax.swing.JLabel();
@@ -294,6 +299,7 @@ public class AdminJFrame extends javax.swing.JFrame {
         tabelDataKeuangan = new javax.swing.JTable();
         totalPendapatanLabel = new javax.swing.JLabel();
         totalPendapatanField = new javax.swing.JTextField();
+        copyright = new javax.swing.JLabel();
 
         jButton2.setText("jButton2");
 
@@ -441,12 +447,16 @@ public class AdminJFrame extends javax.swing.JFrame {
             }
         });
 
+        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright5.setForeground(new java.awt.Color(76, 61, 25));
+        copyright5.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
+                .addContainerGap(66, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(emailLabel)
@@ -486,7 +496,8 @@ public class AdminJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(alamatLabel)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(copyright5))
                 .addGap(167, 167, 167))
         );
         jPanel2Layout.setVerticalGroup(
@@ -527,7 +538,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(simpanBtn)
                     .addComponent(resetBtn))
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(copyright5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         jTabbedPane1.addTab("Tambah Akun", jPanel2);
@@ -573,6 +586,10 @@ public class AdminJFrame extends javax.swing.JFrame {
         dataUserLabel.setForeground(new java.awt.Color(76, 61, 25));
         dataUserLabel.setText("Data User");
 
+        copyright4.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright4.setForeground(new java.awt.Color(76, 61, 25));
+        copyright4.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -580,6 +597,7 @@ public class AdminJFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(84, 84, 84)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(copyright4)
                     .addComponent(dataUserLabel)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -587,7 +605,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cariButton))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -600,7 +618,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                     .addComponent(cariButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addComponent(copyright4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         jTabbedPane1.addTab("Data User", jPanel3);
@@ -690,6 +710,10 @@ public class AdminJFrame extends javax.swing.JFrame {
         deskripsiLabel.setForeground(new java.awt.Color(76, 61, 25));
         deskripsiLabel.setText("Deskripsi        :");
 
+        copyright3.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright3.setForeground(new java.awt.Color(76, 61, 25));
+        copyright3.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -698,25 +722,27 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGap(88, 88, 88)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(simpanMenu)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(inputMenuLabel)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(deskripsiLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane3))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(namaMenuLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(namaMenuField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jenisMenuLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(jenisMenuComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(hargaPerPorsiLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(hargaPerPorsiField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(copyright3)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(inputMenuLabel)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(deskripsiLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane3))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(namaMenuLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(namaMenuField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jenisMenuLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(jenisMenuComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(hargaPerPorsiLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(hargaPerPorsiField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(hapusMenuBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(editMenuBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -753,7 +779,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(simpanMenu)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addComponent(copyright3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         jTabbedPane1.addTab("Input Menu", jPanel4);
@@ -793,6 +821,10 @@ public class AdminJFrame extends javax.swing.JFrame {
         dataMenuLabel.setForeground(new java.awt.Color(76, 61, 25));
         dataMenuLabel.setText("Data Menu");
 
+        copyright2.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright2.setForeground(new java.awt.Color(76, 61, 25));
+        copyright2.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -800,6 +832,7 @@ public class AdminJFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(89, 89, 89)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(copyright2)
                     .addComponent(dataMenuLabel)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel5Layout.createSequentialGroup()
@@ -807,7 +840,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cariMenuButton))
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -820,7 +853,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                     .addComponent(cariMenuButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addComponent(copyright2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Data Menu", jPanel5);
@@ -884,13 +919,18 @@ public class AdminJFrame extends javax.swing.JFrame {
             }
         });
 
+        copyright1.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright1.setForeground(new java.awt.Color(76, 61, 25));
+        copyright1.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(0, 85, Short.MAX_VALUE)
+                .addGap(0, 74, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(copyright1)
                     .addComponent(daftarPesananLabel)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel6Layout.createSequentialGroup()
@@ -903,7 +943,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                         .addComponent(lihatDetailPesBtn)
                         .addGap(116, 116, 116)
                         .addComponent(updateStatusbtn)))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -920,7 +960,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lihatDetailPesBtn)
                     .addComponent(updateStatusbtn))
-                .addGap(0, 87, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(copyright1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
 
         jTabbedPane1.addTab("Daftar Pesanan", jPanel6);
@@ -987,6 +1029,10 @@ public class AdminJFrame extends javax.swing.JFrame {
         totalPendapatanField.setFont(new java.awt.Font("Constantia", 0, 14)); // NOI18N
         totalPendapatanField.setForeground(new java.awt.Color(76, 61, 25));
 
+        copyright.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright.setForeground(new java.awt.Color(76, 61, 25));
+        copyright.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -1018,8 +1064,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addComponent(totalPendapatanLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalPendapatanField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(92, Short.MAX_VALUE))
+                                .addComponent(totalPendapatanField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(copyright))))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1044,7 +1091,9 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalPendapatanLabel)
                     .addComponent(totalPendapatanField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(copyright)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Laporan Keuangan", jPanel7);
@@ -1058,7 +1107,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jTabbedPane1))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1074,7 +1123,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1439,6 +1488,12 @@ public class AdminJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField cariMenuField;
     private javax.swing.JButton cariPesananBtn;
     private javax.swing.JTextField cariPesananField;
+    private javax.swing.JLabel copyright;
+    private javax.swing.JLabel copyright1;
+    private javax.swing.JLabel copyright2;
+    private javax.swing.JLabel copyright3;
+    private javax.swing.JLabel copyright4;
+    private javax.swing.JLabel copyright5;
     private javax.swing.JLabel daftarPesananLabel;
     private javax.swing.JTextField dariTanggalField;
     private javax.swing.JLabel dariTglLabel;

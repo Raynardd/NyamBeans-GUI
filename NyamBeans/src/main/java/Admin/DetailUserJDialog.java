@@ -93,6 +93,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         showPassCheck = new javax.swing.JCheckBox();
         emailField = new javax.swing.JTextField();
         emailLabel = new javax.swing.JLabel();
+        copyright5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -218,6 +219,10 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         emailLabel.setForeground(new java.awt.Color(76, 61, 25));
         emailLabel.setText("Email                :");
 
+        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright5.setForeground(new java.awt.Color(76, 61, 25));
+        copyright5.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -225,6 +230,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(copyright5)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(emailLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -299,7 +305,9 @@ public class DetailUserJDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(simpanButton)
                     .addComponent(batalButton))
-                .addGap(40, 40, 40))
+                .addGap(18, 18, 18)
+                .addComponent(copyright5)
+                .addGap(7, 7, 7))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -480,6 +488,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel alamatLabel;
     private javax.swing.JTextArea alamatTextArea;
     private javax.swing.JButton batalButton;
+    private javax.swing.JLabel copyright5;
     private javax.swing.JLabel detailUserLabel;
     private javax.swing.JTextField emailField;
     private javax.swing.JLabel emailLabel;
