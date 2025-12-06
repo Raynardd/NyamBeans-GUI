@@ -1,7 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
+* Nama Program : NyamBeans
+* Nama         : Vincentius Raynard Thedy, Nena Haryadi Puspanegara, Alfon Daren Witanto
+* NPM          : 140810240028, 140810240034, 140810240052
+* Tanggal buat : 28 November - 4 Desember 2025
+* Deskripsi    : DetailUserJDialog.java (JDialog class)
+*/
+
 package Admin;
 
 import Model.User;

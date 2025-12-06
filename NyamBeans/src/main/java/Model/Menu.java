@@ -1,3 +1,11 @@
+/*
+* Nama Program : NyamBeans
+* Nama         : Vincentius Raynard Thedy, Nena Haryadi Puspanegara, Alfon Daren Witanto
+* NPM          : 140810240028, 140810240034, 140810240052
+* Tanggal buat : 28 November - 4 Desember 2025
+* Deskripsi    : Menu.java (class model)
+*/
+
 package Model;
 
 import Auth.DatabaseConnection;
