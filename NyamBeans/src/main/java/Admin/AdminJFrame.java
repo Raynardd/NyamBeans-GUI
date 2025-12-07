@@ -36,35 +36,21 @@ public class AdminJFrame extends javax.swing.JFrame {
     
     public AdminJFrame() {
         initComponents();
-        
-        // ========================================================================
-        // 1. SETUP TABEL USER (Teknik "Kolom Hantu" / Hidden Column)
-        // ========================================================================
-        // Kita definisikan ulang model tabel agar punya kolom "ID" di index 0
         javax.swing.table.DefaultTableModel modelUser = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
-            // Perhatikan: Kolom "ID" kita taruh di urutan pertama
             new String [] { "ID", "Nama Lengkap", "Username", "Role", "No. Telp", "Alamat" }
         ) {
-            // Mematikan edit langsung di sel tabel (agar user terbiasa pakai fitur double click)
             boolean[] canEdit = new boolean [] { false, false, false, false, false, false };
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         };
-
-        // Pasang model baru ke tabel
         dataUserTable.setModel(modelUser);
 
-        // KUNCI RAHASIA: Set lebar kolom ke-0 (ID) menjadi 0 pixel agar tidak terlihat
         dataUserTable.getColumnModel().getColumn(0).setMinWidth(0);
         dataUserTable.getColumnModel().getColumn(0).setMaxWidth(0);
         dataUserTable.getColumnModel().getColumn(0).setWidth(0);
-        // ========================================================================
 
-
-        // --- 2. SETUP COMBOBOX MENU ---
-        // Isi pilihan jenis menu (sesuai ENUM di database) agar konsisten
         jenisMenuComboBox.removeAllItems();
         jenisMenuComboBox.addItem("Paket Nasi Ekonomis");
         jenisMenuComboBox.addItem("Paket Nasi Standar");
@@ -74,20 +60,15 @@ public class AdminJFrame extends javax.swing.JFrame {
         jenisMenuComboBox.addItem("Paket Snack Premium");
         jenisMenuComboBox.addItem("Tambahan");
 
-        // --- 3. LOAD DATA AWAL KE TABEL ---
         loadDataMenu();
-
-        // loadDataUser() ini sekarang aman dipanggil karena tabelnya sudah siap (punya 6 kolom termasuk ID)
         loadDataUser();     
-
         loadDataPesanan();
         initLaporanKeuangan();
     }
     
     private void loadDataMenu() {
         DefaultTableModel model = (DefaultTableModel) dataMenuTable.getModel();
-        model.setRowCount(0); // Bersihkan tabel lama
-
+        model.setRowCount(0);
         List<Menu> menus = Menu.getAllMenu();
         for (Menu m : menus) {
             model.addRow(new Object[]{
@@ -119,33 +100,25 @@ public class AdminJFrame extends javax.swing.JFrame {
     
     // Method untuk mengisi tanggal default (Bulan ini) dan load data otomatis
     private void initLaporanKeuangan() {
-        // 1. Atur Tanggal Otomatis
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
 
-        // Tanggal Akhir = Hari ini
-        String tglAkhir = sdf.format(cal.getTime());
+        String tglAkhir = sdf.format(cal.getTime()); //tanggal akhir bulan ini
         sampaiTanggalField.setText(tglAkhir);
-
-        // Tanggal Awal = Tanggal 1 bulan ini
-        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1); // tanggal awal bulan ini
         String tglAwal = sdf.format(cal.getTime());
         dariTanggalField.setText(tglAwal);
 
-        // 2. Panggil logika tampilkan data (Sama seperti tombol ditekan)
         tampilkanLaporan(tglAwal, tglAkhir);
     }
     
-    // Kita pisahkan logika load tabel laporan agar bisa dipanggil dari dua tempat
     private void tampilkanLaporan(String tglAwalStr, String tglAkhirStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date tglAwal = sdf.parse(tglAwalStr);
             Date tglAkhir = sdf.parse(tglAkhirStr);
 
-            // Panggil Model Pesanan
             List<Pesanan> laporan = Pesanan.getLaporan(tglAwal, tglAkhir);
-
             DefaultTableModel model = (DefaultTableModel) tabelDataKeuangan.getModel();
             model.setRowCount(0);
 
@@ -153,7 +126,7 @@ public class AdminJFrame extends javax.swing.JFrame {
 
             for (Pesanan p : laporan) {
                 model.addRow(new Object[]{
-                    p.getTglAcara(), // Tanggal
+                    p.getTglAcara(), // tanggal
                     p.getIdPesanan(),
                     p.getNamaPemesan(),
                     p.getStatus(),
@@ -174,18 +147,17 @@ public class AdminJFrame extends javax.swing.JFrame {
     }
     
     private void clearMenuForm() {
-        idMenuTarget = 0; // Reset target ID
+        idMenuTarget = 0;
         namaMenuField.setText("");
         jenisMenuComboBox.setSelectedIndex(0);
         hargaPerPorsiField.setText("");
         deskripsiMenuTextArea.setText("");
         
-        // Ubah teks tombol Simpan kembali ke mode normal jika sebelumnya mode edit
         simpanMenu.setText("Simpan"); 
         namaMenuField.requestFocus();
     }
     
-    // --- Method untuk User ---
+    // Method untuk user
     private void loadDataUser() {
         DefaultTableModel model = (DefaultTableModel) dataUserTable.getModel();
         model.setRowCount(0);
@@ -198,7 +170,7 @@ public class AdminJFrame extends javax.swing.JFrame {
                 u.getUsername(),
                 u.getRole(),
                 u.getNoTelp(),
-                u.getAlamat() // Jika di tabel ada kolom alamat, kalau tidak, bisa dihapus
+                u.getAlamat() 
             });
         }
     }
@@ -1146,27 +1118,26 @@ public class AdminJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
+    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         usernameField.requestFocus();
-    }//GEN-LAST:event_namaLengkapFieldActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         noTelpField.requestFocus();
-    }//GEN-LAST:event_passwordFieldActionPerformed
-
-    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
+    }
+    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         emailField.requestFocus();
-    }//GEN-LAST:event_noTelpFieldActionPerformed
+    }
 
-    private void simpanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanBtnActionPerformed
+    private void simpanBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String nama = namaLengkapField.getText();
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
@@ -1175,7 +1146,7 @@ public class AdminJFrame extends javax.swing.JFrame {
         String email = emailField.getText().trim();
         String alamat = alamatTextArea.getText();
         
-        if (!noTelp.matches("\\d+")) { // Regex: \d+ artinya hanya digit angka
+        if (!noTelp.matches("\\d+")) { // Regex: \d+  hanya digit angka
             JOptionPane.showMessageDialog(this, "No. Telepon harus berupa angka!");
             return;
         }
@@ -1214,9 +1185,9 @@ public class AdminJFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Gagal menambah user.");
         }
-    }//GEN-LAST:event_simpanBtnActionPerformed
+    }
 
-    private void simpanMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanMenuActionPerformed
+    private void simpanMenuActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             String nama = namaMenuField.getText();
             String jenis = jenisMenuComboBox.getSelectedItem().toString();
@@ -1231,8 +1202,7 @@ public class AdminJFrame extends javax.swing.JFrame {
 
             if(menuBaru.tambahMenu()) {
                 JOptionPane.showMessageDialog(this, "Menu Berhasil Disimpan!");
-                loadDataMenu(); // Refresh tabel di tab sebelah
-                // Kosongkan form (opsional: buat method clearMenuForm())
+                loadDataMenu();
                 namaMenuField.setText("");
                 hargaPerPorsiField.setText("");
                 deskripsiMenuTextArea.setText("");
@@ -1242,62 +1212,50 @@ public class AdminJFrame extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_simpanMenuActionPerformed
+    }
 
     private void dataMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataMenuTableMouseClicked
-        // Ambil baris yang diklik
-        int baris = dataMenuTable.rowAtPoint(evt.getPoint());
+        int baris = dataMenuTable.rowAtPoint(evt.getPoint());// Ambil baris yang diklik
         
         if (baris >= 0) {
-            // Ambil ID dari kolom ke-0 (Pastikan urutan kolom tabel Anda: ID, Nama, Jenis, Harga, Deskripsi)
+            // ambil id dari kolom ke-0
             idMenuTarget = Integer.parseInt(dataMenuTable.getValueAt(baris, 0).toString());
-            
-            // Isi Form Input dengan data dari tabel
             namaMenuField.setText(dataMenuTable.getValueAt(baris, 1).toString());
             
-            // Set ComboBox (pastikan string-nya sama persis dengan yang ada di item combobox)
             jenisMenuComboBox.setSelectedItem(dataMenuTable.getValueAt(baris, 2).toString());
-            
             hargaPerPorsiField.setText(dataMenuTable.getValueAt(baris, 3).toString());
             deskripsiMenuTextArea.setText(dataMenuTable.getValueAt(baris, 4).toString());
-            
-            // Pindah otomatis ke Tab "Input Menu" (Tab index 2) agar user bisa langsung edit
-            jTabbedPane1.setSelectedIndex(2);
-            
-            // Opsional: Ubah teks tombol Simpan jadi "Update" biar user sadar ini mode edit
-            // Tapi karena Anda punya tombol "Edit" terpisah, kita pakai tombol Edit saja.
+            jTabbedPane1.setSelectedIndex(2); // pindah otomatis
         }
-    }//GEN-LAST:event_dataMenuTableMouseClicked
+    }
 
-    private void editMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuBtnActionPerformed
+    private void editMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (idMenuTarget == 0) {
             JOptionPane.showMessageDialog(this, "Pilih data dari tabel 'Data Menu' terlebih dahulu!");
             return;
         }
 
         try {
-            // Siapkan objek Menu dengan data baru dari form
             Model.Menu m = new Model.Menu();
-            m.setIdMenu(idMenuTarget); // PENTING: Set ID agar tahu mana yang di-update
+            m.setIdMenu(idMenuTarget); 
             m.setNamaMenu(namaMenuField.getText());
             m.setJenisMenu(jenisMenuComboBox.getSelectedItem().toString());
             m.setHargaPerPorsi(Integer.parseInt(hargaPerPorsiField.getText()));
             m.setDeskripsi(deskripsiMenuTextArea.getText());
 
-            // Panggil method updateMenu dari Model
             if (m.updateMenu()) {
                 JOptionPane.showMessageDialog(this, "Data Berhasil Diubah!");
-                loadDataMenu(); // Refresh tabel
-                clearMenuForm(); // Bersihkan form
+                loadDataMenu();
+                clearMenuForm();
             } else {
                 JOptionPane.showMessageDialog(this, "Gagal mengubah data.");
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Harga harus angka!");
         }
-    }//GEN-LAST:event_editMenuBtnActionPerformed
+    }
 
-    private void hapusMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusMenuBtnActionPerformed
+    private void hapusMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (idMenuTarget == 0) {
             JOptionPane.showMessageDialog(this, "Pilih data yang ingin dihapus dari tabel!");
             return;
@@ -1320,35 +1278,29 @@ public class AdminJFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Gagal menghapus data.");
             }
         }
-    }//GEN-LAST:event_hapusMenuBtnActionPerformed
+    }
 
-    private void resetMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetMenuBtnActionPerformed
+    private void resetMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {
         clearMenuForm();
-    }//GEN-LAST:event_resetMenuBtnActionPerformed
+    }
 
-    private void dataUserTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataUserTableMouseClicked
-        // Kita pakai DOUBLE CLICK untuk Edit
+    private void dataUserTableMouseClicked(java.awt.event.MouseEvent evt) {
+        // Kita pakai double click
         if (evt.getClickCount() == 2) {
             int baris = dataUserTable.rowAtPoint(evt.getPoint());
             if (baris >= 0) {
-                // 1. Ambil ID User yang diklik
                 int idUser = Integer.parseInt(dataUserTable.getValueAt(baris, 0).toString());
-
-                // 2. Buka Dialog EDIT (Panggil Dialog yang baru kita buat)
-                // Parameter 'idUser' akan membuat Dialog masuk ke Mode Edit
                 new DetailUserJDialog(this, true, idUser).setVisible(true);
-
-                // 3. Setelah Dialog ditutup (Admin selesai edit/batal), refresh tabel
                 loadDataUser();
             }
         }
-    }//GEN-LAST:event_dataUserTableMouseClicked
+    }
 
-    private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
+    private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {
         clearUserForm();
-    }//GEN-LAST:event_resetBtnActionPerformed
+    }
 
-    private void cariButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariButtonActionPerformed
+    private void cariButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String keyword = cariField.getText();
         DefaultTableModel model = (DefaultTableModel) dataUserTable.getModel();
         model.setRowCount(0);
@@ -1364,29 +1316,26 @@ public class AdminJFrame extends javax.swing.JFrame {
                 u.getAlamat()
             });
         }
-    }//GEN-LAST:event_cariButtonActionPerformed
+    }
 
-    private void tabelPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPesananMouseClicked
+    private void tabelPesananMouseClicked(java.awt.event.MouseEvent evt) {
         int baris = tabelPesanan.rowAtPoint(evt.getPoint());
         if (baris >= 0) {
             idPesananTarget = Integer.parseInt(tabelPesanan.getValueAt(baris, 0).toString());
         }
-    }//GEN-LAST:event_tabelPesananMouseClicked
+    }
 
-    private void updateStatusbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateStatusbtnActionPerformed
+    private void updateStatusbtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (idPesananTarget == 0) {
             JOptionPane.showMessageDialog(this, "Pilih Pelanggan dari tabel dulu!");
             return;
         }
-        
-        // Panggil JDialog Update
-        new UpdateStatusBayarJDialog(this, true, idPesananTarget).setVisible(true);
-        
-        // Setelah dialog tertutup, refresh tabel admin agar status berubah
-        loadDataPesanan();
-    }//GEN-LAST:event_updateStatusbtnActionPerformed
 
-    private void cariPesananBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cariPesananBtnActionPerformed
+        new UpdateStatusBayarJDialog(this, true, idPesananTarget).setVisible(true); // panggil JDialog Update
+        loadDataPesanan();
+    }
+
+    private void cariPesananBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String keyword = cariPesananField.getText();
         DefaultTableModel model = (DefaultTableModel) tabelPesanan.getModel();
         model.setRowCount(0);
@@ -1402,31 +1351,30 @@ public class AdminJFrame extends javax.swing.JFrame {
                 p.getStatus()
             });
         }
-    }//GEN-LAST:event_cariPesananBtnActionPerformed
+    }
 
-    private void tampilkanDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkanDataBtnActionPerformed
+    private void tampilkanDataBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String tglAwal = dariTanggalField.getText();
         String tglAkhir = sampaiTanggalField.getText();
 
-        // Panggil method helper tadi
         tampilkanLaporan(tglAwal, tglAkhir);
-    }//GEN-LAST:event_tampilkanDataBtnActionPerformed
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         int konfirmasi = javax.swing.JOptionPane.showConfirmDialog(this, 
                 "Apakah Anda yakin ingin logout?", 
                 "Konfirmasi Logout", 
                 javax.swing.JOptionPane.YES_NO_OPTION);
         
         if (konfirmasi == javax.swing.JOptionPane.YES_OPTION) {
-            this.dispose(); // Tutup halaman Admin
-            new Auth.LoginJFrame().setVisible(true); // Kembali ke halaman Login
+            this.dispose(); 
+            new Auth.LoginJFrame().setVisible(true); // kembali ke halaman Login
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
-    private void jenisMenuComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jenisMenuComboBoxActionPerformed
+    private void jenisMenuComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_jenisMenuComboBoxActionPerformed
+    }
 
     private void lihatDetailPesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatDetailPesBtnActionPerformed
         if (idPesananTarget == 0) {
@@ -1434,29 +1382,26 @@ public class AdminJFrame extends javax.swing.JFrame {
             return;
         }
         
-        // Panggil JDialog Detail
-        new DetailPesananJDialog(this, true, idPesananTarget).setVisible(true);
-    }//GEN-LAST:event_lihatDetailPesBtnActionPerformed
+        new DetailPesananJDialog(this, true, idPesananTarget).setVisible(true);// panggil Jdialog detail
+    }
 
-    private void rolePenggunaComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolePenggunaComboBoxActionPerformed
+    private void rolePenggunaComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_rolePenggunaComboBoxActionPerformed
+    }
 
-    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         alamatTextArea.requestFocus();
-    }//GEN-LAST:event_emailFieldActionPerformed
+    }
 
     private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassCheckActionPerformed
         // TODO add your handling code here:
         if (showPassCheck.isSelected()) {
-            // Jika dicentang, tampilkan password (ubah jadi karakter biasa)
             passwordField.setEchoChar((char) 0); 
         } else {
-            // Jika tidak dicentang, sembunyikan password (ubah jadi bintang *)
             passwordField.setEchoChar('*'); 
         }
-    }//GEN-LAST:event_showPassCheckActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -1477,9 +1422,7 @@ public class AdminJFrame extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new AdminJFrame().setVisible(true));
     }
 

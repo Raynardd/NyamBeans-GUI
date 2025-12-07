@@ -19,26 +19,16 @@ public class DetailUserJDialog extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DetailUserJDialog.class.getName());
     private int userId = 0;
-    /**
-     * Creates new form DetailUserJDialog
-     */
     
-    /**
-     * Constructor 1: Mode TAMBAH (Data Kosong)
-     */
     public DetailUserJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null); // Tengah layar
+        setLocationRelativeTo(null);
         setTitle("Tambah User Baru");
         
-        // Sembunyikan field ID atau inisialisasi default
         this.userId = 0;
     }
     
-    /**
-     * Constructor 2: Mode EDIT (Terisi Data)
-     */
     public DetailUserJDialog(java.awt.Frame parent, boolean modal, int idUserToEdit) {
         super(parent, modal);
         initComponents();
@@ -46,19 +36,15 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         
         this.userId = idUserToEdit;
         setTitle("Edit Data User");
-        
-        // Panggil fungsi untuk isi form
         loadUserData(this.userId);
     }
     
     // Method untuk mengisi form saat Mode Edit
     private void loadUserData(int id) {
-        // Cari user berdasarkan ID dari list semua user
         for (User u : User.getAllUsers()) {
             if (u.getIdUser() == id) {
                 namaLengkapField.setText(u.getNama());
                 usernameField.setText(u.getUsername());
-                // Password tidak ditampilkan (kosongkan saja)
                 rolePenggunaComboBox.setSelectedItem(u.getRole());
                 noTelpField.setText(u.getNoTelp());
                 emailField.setText(u.getEmail());
@@ -328,13 +314,13 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         noTelpField.requestFocus();
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }
 
-    private void simpanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanButtonActionPerformed
-        // Ambil data dari form
+    private void simpanButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // mengambil data dari form
         String nama = namaLengkapField.getText();
         String username = usernameField.getText();
         String pass = new String(passwordField.getPassword());
@@ -349,7 +335,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
                     "Password harus 6 sampai 8 karakter!", 
                     "Password Tidak Valid", 
                     JOptionPane.WARNING_MESSAGE);
-                return; // Stop, jangan lanjut simpan
+                return; 
             }
         }
         
@@ -368,7 +354,6 @@ public class DetailUserJDialog extends javax.swing.JDialog {
             return;
         }
 
-        // 3. Siapkan Objek User
         User u = new User();
         u.setNama(nama);
         u.setUsername(username);
@@ -376,32 +361,26 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         u.setNoTelp(telp);
         u.setAlamat(alamat);
 
-        // 4. Cek Mode: Tambah atau Edit?
         if (userId == 0) {
-            // --- MODE TAMBAH BARU ---
             if (pass.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Password wajib diisi untuk user baru!");
                 return;
             }
-            u.setPassword(pass); // Set password (akan di-hash di Model)
+            u.setPassword(pass);
             
             if (u.tambahUser()) {
                 JOptionPane.showMessageDialog(this, "User Berhasil Ditambahkan!");
-                this.dispose(); // Tutup dialog
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Gagal menambah user (Cek duplikat username).");
             }
             
         } else {
-            // --- MODE EDIT DATA ---
-            u.setIdUser(userId); // Set ID target agar tidak salah update
-            
-            // Logika Password: Isi hanya jika ingin mengganti
+            //edit data
+            u.setIdUser(userId); 
             if (!pass.isEmpty()) {
-                u.setPassword(pass); // Password baru akan di-hash
+                u.setPassword(pass); 
             }
-            // Jika pass kosong, Model.User.updateUser() akan mengabaikan update password
-            // (Pastikan method updateUser di Model Anda sudah handle password null/kosong)
             
             if (u.updateUser()) {
                 JOptionPane.showMessageDialog(this, "User Berhasil Diupdate!");
@@ -410,46 +389,44 @@ public class DetailUserJDialog extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Gagal update user.");
             }
         }
-    }//GEN-LAST:event_simpanButtonActionPerformed
+    }
 
     private void rolePenggunaComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolePenggunaComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rolePenggunaComboBoxActionPerformed
 
-    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
+    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         usernameField.requestFocus();
-    }//GEN-LAST:event_namaLengkapFieldActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
+    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here
         emailField.requestFocus();
-    }//GEN-LAST:event_noTelpFieldActionPerformed
+    }
 
-    private void batalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batalButtonActionPerformed
+    private void batalButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-    }//GEN-LAST:event_batalButtonActionPerformed
+    }
 
-    private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassCheckActionPerformed
+    private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (showPassCheck.isSelected()) {
-            // Jika dicentang, tampilkan password (ubah jadi karakter biasa)
             passwordField.setEchoChar((char) 0); 
         } else {
-            // Jika tidak dicentang, sembunyikan password (ubah jadi bintang *)
             passwordField.setEchoChar('*'); 
         }
-    }//GEN-LAST:event_showPassCheckActionPerformed
+    }
 
-    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         alamatTextArea.requestFocus();
-    }//GEN-LAST:event_emailFieldActionPerformed
+    }
 
     /**
      * @param args the command line arguments
@@ -470,9 +447,7 @@ public class DetailUserJDialog extends javax.swing.JDialog {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

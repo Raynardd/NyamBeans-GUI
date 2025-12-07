@@ -20,9 +20,6 @@ public class RegisterJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterJFrame.class.getName());
 
-    /**
-     * Creates new form RegisterJFrame
-     */
     public RegisterJFrame() {
         initComponents();
         
@@ -238,22 +235,21 @@ public class RegisterJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         registBtn.doClick();
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void registBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registBtnActionPerformed
+    private void registBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
         String email = emailField.getText().trim();
 
-        // 1. Validasi Input
+        //validasi Input
         if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
@@ -270,19 +266,18 @@ public class RegisterJFrame extends javax.swing.JFrame {
         }
 
         try {
-            // 2. Siapkan Data User Baru
+            // data user baru
             User newUser = new User();
             newUser.setUsername(username);
-            newUser.setPassword(password); // Password akan otomatis di-hash oleh setter di class User
+            newUser.setPassword(password); 
             newUser.setEmail(email);
             
-            // 3. Simpan ke Database
             int resultId = newUser.registerUser();
 
             if (resultId > 0) {
                 JOptionPane.showMessageDialog(this, "Registrasi Berhasil! Silakan Login.");
                 this.dispose();
-                new LoginJFrame().setVisible(true); // Pindah ke halaman Login
+                new LoginJFrame().setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Registrasi Gagal. Coba username lain.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -291,36 +286,36 @@ public class RegisterJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan database: " + e.getMessage());
             e.printStackTrace();
         }
-    }//GEN-LAST:event_registBtnActionPerformed
+    }
 
-    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {
         usernameField.setText("");
         passwordField.setText("");
         emailField.setText("");
         rememberCheckBox.setSelected(false);
-    }//GEN-LAST:event_clearBtnActionPerformed
+    }
 
-    private void showPasswordCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordCheckboxActionPerformed
+    private void showPasswordCheckboxActionPerformed(java.awt.event.ActionEvent evt) {
         if (showPasswordCheckbox.isSelected()) {
-            passwordField.setEchoChar((char) 0); // tampilkan teks password
+            passwordField.setEchoChar((char) 0);
         } else {
-            passwordField.setEchoChar('*'); // sembunyikan password
+            passwordField.setEchoChar('*');
         }
-    }//GEN-LAST:event_showPasswordCheckboxActionPerformed
+    }
 
-    private void rememberCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rememberCheckBoxActionPerformed
+    private void rememberCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_rememberCheckBoxActionPerformed
+    }
 
-    private void registPageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registPageLabelMouseClicked
+    private void registPageLabelMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
         new LoginJFrame().setVisible(true);
-    }//GEN-LAST:event_registPageLabelMouseClicked
+    }
 
-    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         usernameField.requestFocus();
-    }//GEN-LAST:event_emailFieldActionPerformed
+    }
 
     /**
      * @param args the command line arguments

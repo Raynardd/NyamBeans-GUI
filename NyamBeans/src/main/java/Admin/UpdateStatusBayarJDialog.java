@@ -23,9 +23,6 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
     private int currentIdPesanan;
     private int totalHarga = 0;
     
-    /**
-     * Creates new form UpdateStatusBayarJDialog
-     */
     public UpdateStatusBayarJDialog(java.awt.Frame parent, boolean modal, int idPesanan) {
         super(parent, modal);
         initComponents();
@@ -41,22 +38,9 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         if (p != null) {
             idPesananField.setText(String.valueOf(p.getIdPesanan()));
             namaPemesanField.setText(p.getNamaPemesan());
-
-            // Kita simpan total harga ke variabel global class ini (pastikan variabel totalHarga ada di atas)
             this.totalHarga = p.getTotalHarga(); 
             totalTagihanField.setText(String.valueOf(totalHarga));
-
-            // Catatan: Karena getPesananById Anda belum mengambil dp_dibayar & sisa_bayar,
-            // Idealnya getter setter untuk dp dan sisa ditambahkan juga di Pesanan.java.
-            // Tapi untuk sekarang, kita ambil sisa dari perhitungan sederhana atau biarkan kode query SELECT lama 
-            // HANYA jika Anda belum sempat update getter/setter Pesanan.java.
-
-            // Jika Pesanan.java sudah lengkap (ada getDpDibayar & getSisaBayar), pakai ini:
-            // dpDiabayarField.setText(String.valueOf(p.getDpDibayar()));
-            // sisaBayarField.setText(String.valueOf(p.getSisaBayar()));
-
             statusPesanan.setSelectedItem(p.getStatus());
-
             idPesananField.setEditable(false);
             namaPemesanField.setEditable(false);
             totalTagihanField.setEditable(false);
@@ -292,9 +276,8 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_dpDiabayarFieldActionPerformed
 
-    private void simpanUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanUpdateBtnActionPerformed
+    private void simpanUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // 1. Ambil data baru
             int dpBaru = Integer.parseInt(dpDiabayarField.getText());
             int sisaBaru = totalHarga - dpBaru;
             String statusBaru = statusPesanan.getSelectedItem().toString();
@@ -311,29 +294,26 @@ public class UpdateStatusBayarJDialog extends javax.swing.JDialog {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "DP harus angka!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_simpanUpdateBtnActionPerformed
+    }
 
-    private void tutupJDialogBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutupJDialogBtnActionPerformed
+    private void tutupJDialogBtnActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-    }//GEN-LAST:event_tutupJDialogBtnActionPerformed
+    }
 
-    private void dpDiabayarFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dpDiabayarFieldKeyReleased
+    private void dpDiabayarFieldKeyReleased(java.awt.event.KeyEvent evt) {
         try {
-            // Ambil angka yang baru diketik
             String text = dpDiabayarField.getText();
             
             if (!text.isEmpty()) {
                 int dp = Integer.parseInt(text);
-                int sisa = totalHarga - dp; // Hitung sisa otomatis
+                int sisa = totalHarga - dp; // hitung sisa otomatis
                 sisaBayarField.setText(String.valueOf(sisa));
             } else {
-                // Jika dihapus kosong, kembalikan ke total harga asli
                 sisaBayarField.setText(String.valueOf(totalHarga));
             }
         } catch (NumberFormatException e) {
-            // Abaikan jika user mengetik huruf
         }
-    }//GEN-LAST:event_dpDiabayarFieldKeyReleased
+    }
 
     private void sisaBayarFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sisaBayarFieldActionPerformed
         // TODO add your handling code here:

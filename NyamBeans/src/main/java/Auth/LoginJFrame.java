@@ -9,21 +9,19 @@
 package Auth;
 
 import Model.User;
-import Admin.AdminJFrame; // Import halaman Admin
-import User.UserJFrame;   // Import halaman User
-import javax.swing.JOptionPane; // Import untuk pesan dialog
+import Admin.AdminJFrame; 
+import User.UserJFrame;  
+import javax.swing.JOptionPane; 
 
 /**
  *
  * @author Raynard
  */
+
 public class LoginJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
 
-    /**
-     * Creates new form LoginJFrame
-     */
     public LoginJFrame() {
         initComponents();
     }
@@ -40,42 +38,31 @@ public class LoginJFrame extends javax.swing.JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        // Validasi input kosong
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Panggil fungsi login dari Class Model User
         User userModel = new User();
         User loggedInUser = userModel.login(username, password);
 
         if (loggedInUser != null) {
-            // Login Berhasil
-            
-            // --- BAGIAN INI YANG SEBELUMNYA DI-COMMENT, SAYA NYALAKAN KEMBALI ---
             String role = loggedInUser.getRole(); 
-            // --------------------------------------------------------------------
-            
             JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang, " + loggedInUser.getUsername());
 
             // Cek Role untuk mengarahkan ke halaman yang benar
-            // Pastikan role tidak null sebelum dicek untuk menghindari NullPointerException
-            if (role != null && role.equalsIgnoreCase("Admin")) {
+            if (role != null && role.equalsIgnoreCase("Admin")) { 
                 new AdminJFrame().setVisible(true);
             } else {
                 new UserJFrame(loggedInUser).setVisible(true); 
             }
             
-            this.dispose(); // Tutup halaman login
+            this.dispose();
         } else {
-            // Login Gagal
             JOptionPane.showMessageDialog(this, "Username atau Password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -98,23 +85,23 @@ public class LoginJFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(229, 215, 196));
 
         usernameLabel.setBackground(new java.awt.Color(0, 0, 0));
-        usernameLabel.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        usernameLabel.setFont(new java.awt.Font("Coustard", 0, 12)); 
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         usernameLabel.setText("Username");
 
         passwordLabel.setBackground(new java.awt.Color(0, 0, 0));
-        passwordLabel.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Coustard", 0, 12)); 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         passwordLabel.setText("Password");
 
-        passwordField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        passwordField.setFont(new java.awt.Font("Poppins", 0, 12)); 
         passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordFieldActionPerformed(evt);
             }
         });
 
-        usernameField.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        usernameField.setFont(new java.awt.Font("Poppins", 0, 12)); 
         usernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameFieldActionPerformed(evt);
@@ -122,7 +109,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         });
 
         loginBtn.setBackground(new java.awt.Color(53, 64, 36));
-        loginBtn.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        loginBtn.setFont(new java.awt.Font("Coustard", 0, 12)); 
         loginBtn.setForeground(new java.awt.Color(229, 215, 196));
         loginBtn.setText("Login");
         loginBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -134,7 +121,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         });
 
         clearBtn.setBackground(new java.awt.Color(53, 64, 36));
-        clearBtn.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        clearBtn.setFont(new java.awt.Font("Coustard", 0, 12)); 
         clearBtn.setForeground(new java.awt.Color(229, 215, 196));
         clearBtn.setText("Clear");
         clearBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -145,11 +132,11 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
 
-        isHaveAccLabel.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        isHaveAccLabel.setFont(new java.awt.Font("Coustard", 0, 12)); 
         isHaveAccLabel.setForeground(new java.awt.Color(64, 81, 78));
         isHaveAccLabel.setText("Don't have an account ? ");
 
-        registPageLabel.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        registPageLabel.setFont(new java.awt.Font("Coustard", 0, 12)); 
         registPageLabel.setForeground(new java.awt.Color(76, 61, 25));
         registPageLabel.setText("Register for free");
         registPageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -158,18 +145,18 @@ public class LoginJFrame extends javax.swing.JFrame {
             }
         });
 
-        rememberCheckBox.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        rememberCheckBox.setFont(new java.awt.Font("Coustard", 0, 12)); 
         rememberCheckBox.setForeground(new java.awt.Color(64, 81, 78));
         rememberCheckBox.setText("Remember me");
 
-        showPasswordCheckBox.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        showPasswordCheckBox.setFont(new java.awt.Font("Poppins", 0, 12)); 
         showPasswordCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showPasswordCheckBoxActionPerformed(evt);
             }
         });
 
-        forgotPassLabel.setFont(new java.awt.Font("Coustard", 0, 12)); // NOI18N
+        forgotPassLabel.setFont(new java.awt.Font("Coustard", 0, 12)); 
         forgotPassLabel.setForeground(new java.awt.Color(76, 61, 25));
         forgotPassLabel.setText("Forgot password");
         forgotPassLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -179,12 +166,12 @@ public class LoginJFrame extends javax.swing.JFrame {
         });
 
         judulLabel.setBackground(new java.awt.Color(0, 0, 0));
-        judulLabel.setFont(new java.awt.Font("Coustard", 1, 24)); // NOI18N
+        judulLabel.setFont(new java.awt.Font("Coustard", 1, 24)); 
         judulLabel.setForeground(new java.awt.Color(76, 61, 25));
         judulLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         judulLabel.setText("NyamBeans");
 
-        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); // NOI18N
+        copyright5.setFont(new java.awt.Font("Constantia", 0, 12)); 
         copyright5.setForeground(new java.awt.Color(76, 61, 25));
         copyright5.setText("Copyright : Raynard - 240028 / Nena - 240034 / Darren - 240052");
 
@@ -269,41 +256,40 @@ public class LoginJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         login();
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+    private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {
         login();
-    }//GEN-LAST:event_loginBtnActionPerformed
+    }
 
-    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {
         clearForm();
-    }//GEN-LAST:event_clearBtnActionPerformed
+    }
 
-    private void registPageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registPageLabelMouseClicked
+    private void registPageLabelMouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
         new RegisterJFrame().setVisible(true);
-    }//GEN-LAST:event_registPageLabelMouseClicked
+    }
 
-    private void showPasswordCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordCheckBoxActionPerformed
+    private void showPasswordCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
         if (showPasswordCheckBox.isSelected()) {
             passwordField.setEchoChar((char) 0);
         } else {
             passwordField.setEchoChar('*');
         }
-    }//GEN-LAST:event_showPasswordCheckBoxActionPerformed
+    }
 
-    private void forgotPassLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotPassLabelMouseClicked
-        this.dispose();
+    private void forgotPassLabelMouseClicked(java.awt.event.MouseEvent evt) {
         new ForgotPassJFrame().setVisible(true);
-    }//GEN-LAST:event_forgotPassLabelMouseClicked
+    }
 
     /**
      * @param args the command line arguments

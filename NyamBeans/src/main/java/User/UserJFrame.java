@@ -1,7 +1,11 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+* Nama Program : NyamBeans
+* Nama         : Vincentius Raynard Thedy, Nena Haryadi Puspanegara, Alfon Daren Witanto
+* NPM          : 140810240028, 140810240034, 140810240052
+* Tanggal buat : 28 November - 4 Desember 2025
+* Deskripsi    : UserJFrame.java (JFrame class)
+*/
+
 package User;
 
 import Model.DetailPesanan;
@@ -21,10 +25,6 @@ import java.util.List;
 public class UserJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserJFrame.class.getName());
-
-    /**
-     * Creates new form UserJFrame
-     */
     
     private User currentUser;
     private List<DetailPesanan> keranjangBelanja; // Menyimpan item sementara
@@ -34,7 +34,7 @@ public class UserJFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    // Constructor Utama (Dipanggil dari Login)
+    // Constructor Utama 
     public UserJFrame(User user) {
         initComponents();
         this.currentUser = user;
@@ -807,7 +807,7 @@ public class UserJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void hapusItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusItemBtnActionPerformed
+    private void hapusItemBtnActionPerformed(java.awt.event.ActionEvent evt) {
         int row = jTable1.getSelectedRow();
         if (row >= 0) {
             keranjangBelanja.remove(row);
@@ -815,23 +815,21 @@ public class UserJFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Pilih item yang mau dihapus!");
         }
-    }//GEN-LAST:event_hapusItemBtnActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {
         if (currentUser == null) return;
-        
         // ambil data dari form
         String nama = namaLengkapField.getText().trim();
         String username = usernameField.getText().trim();
         String noTelp = noTelpField.getText().trim();
         String email = emailField.getText().trim();
         String alamat = alamatTextArea.getText().trim();
-        // ambil password dari JPasswordField
         String pass = new String(passwordField.getPassword()).trim(); 
         
         if (nama.isEmpty() || username.isEmpty() || noTelp.isEmpty() || email.isEmpty()) {
@@ -839,7 +837,6 @@ public class UserJFrame extends javax.swing.JFrame {
             return;
         }
         
-        // validasi No. Telepon harus angka
         if (!noTelp.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "No. Telepon harus berupa angka!");
             return;
@@ -860,7 +857,6 @@ public class UserJFrame extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            // jika lolos, set password baru (otomatis di-hash di Model)
             currentUser.setPassword(pass);
         }
         
@@ -876,14 +872,13 @@ public class UserJFrame extends javax.swing.JFrame {
 
             usernameLabel1.setText("Halo, " + currentUser.getNama() + "!");
             
-            // kosongin field password agar aman & bersih
             passwordField.setText(""); 
         } else {
             JOptionPane.showMessageDialog(this, "Gagal update profil. Cek koneksi atau username mungkin sudah dipakai.");
         }
-    }//GEN-LAST:event_updateButtonActionPerformed
+    }
 
-    private void tambahkanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahkanBtnActionPerformed
+    private void tambahkanBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String namaMenu = menuField.getText();
         int qty = (int) jmlPorsiSpiner.getValue();
         
@@ -897,27 +892,27 @@ public class UserJFrame extends javax.swing.JFrame {
             DetailPesanan detail = new DetailPesanan(m.getIdMenu(), m.getNamaMenu(), qty, m.getHargaPerPorsi());
             keranjangBelanja.add(detail);
             refreshTabelKeranjang();
-            menuField.setText(""); // Reset field
+            menuField.setText(""); // reset field
             jmlPorsiSpiner.setValue(0);
         } else {
             JOptionPane.showMessageDialog(this, "Menu tidak ditemukan! Cek ejaan di Katalog.");
         }
-    }//GEN-LAST:event_tambahkanBtnActionPerformed
+    }
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void PesanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PesanBtnActionPerformed
+    private void PesanBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (keranjangBelanja.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Keranjang masih kosong!");
             return;
         }
         
         String lokasi = lokasiText.getText();
-        String catatan = catatanText.getText(); // Ambil catatan
+        String catatan = catatanText.getText(); // ambil catatan
         Date tglAcara = (Date) tanggalSpinner.getValue();
-        String metode = jComboBox1.getSelectedItem().toString(); // Ambil metode bayar
+        String metode = jComboBox1.getSelectedItem().toString(); // ambil metode bayar
         
         if (lokasi.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Lokasi acara harus diisi!");
@@ -927,13 +922,10 @@ public class UserJFrame extends javax.swing.JFrame {
         Pesanan p = new Pesanan();
         p.setIdUser(currentUser.getIdUser());
         p.setTglAcara(new java.sql.Date(tglAcara.getTime()));
-        
-        // --- PERBAIKAN DI SINI ---
         p.setLokasiAcara(lokasi); 
-        p.setCatatan(catatan);      // Set Catatan
-        p.setMetodeBayar(metode);   // Set Metode Bayar (Tunai/Transfer)
+        p.setCatatan(catatan);      
+        p.setMetodeBayar(metode);   
         p.setTotalHarga(grandTotal);
-        // -------------------------
         
         if (p.simpanPesanan(keranjangBelanja)) {
             JOptionPane.showMessageDialog(this, "Pesanan Berhasil Dibuat! Silakan bayar DP.");
@@ -941,65 +933,60 @@ public class UserJFrame extends javax.swing.JFrame {
             refreshTabelKeranjang();
             lokasiText.setText("");
             catatanText.setText("");
-            loadRiwayatPesanan(); // Refresh tab riwayat
-            jTabbedPane1.setSelectedIndex(3); // Pindah ke tab Riwayat
+            loadRiwayatPesanan(); 
+            jTabbedPane1.setSelectedIndex(3); // pindah ke tab Riwayat
         } else {
             JOptionPane.showMessageDialog(this, "Gagal membuat pesanan. Cek koneksi database.");
         }
-    }//GEN-LAST:event_PesanBtnActionPerformed
+    }
 
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
         new Auth.LoginJFrame().setVisible(true);
-    }//GEN-LAST:event_logoutButtonActionPerformed
+    }
 
-    private void tabelMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMenuMouseClicked
+    private void tabelMenuMouseClicked(java.awt.event.MouseEvent evt) {
         int row = tabelMenu.getSelectedRow();
         if (row >= 0) {
             String namaMenu = tabelMenu.getValueAt(row, 0).toString();
-            // Pindah ke tab Buat Pesanan (Index 1)
             jTabbedPane1.setSelectedIndex(1);
             menuField.setText(namaMenu);
         }
-    }//GEN-LAST:event_tabelMenuMouseClicked
+    }
 
-    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         alamatTextArea.requestFocus();
-    }//GEN-LAST:event_emailFieldActionPerformed
+    }
 
-    private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPassCheckActionPerformed
+    private void showPassCheckActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if (showPassCheck.isSelected()) {
-            // Jika dicentang, tampilkan password (ubah jadi karakter biasa)
             passwordField.setEchoChar((char) 0);
         } else {
-            // Jika tidak dicentang, sembunyikan password (ubah jadi bintang *)
             passwordField.setEchoChar('*');
         }
-    }//GEN-LAST:event_showPassCheckActionPerformed
+    }
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         noTelpField.requestFocus();
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }
 
-    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaLengkapFieldActionPerformed
+    private void namaLengkapFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         usernameField.requestFocus();
-    }//GEN-LAST:event_namaLengkapFieldActionPerformed
+    }
 
-    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTelpFieldActionPerformed
+    private void noTelpFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         emailField.requestFocus();
-    }//GEN-LAST:event_noTelpFieldActionPerformed
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
@@ -1013,9 +1000,7 @@ public class UserJFrame extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new UserJFrame().setVisible(true));
     }
 

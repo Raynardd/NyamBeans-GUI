@@ -23,9 +23,6 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ForgotPassJFrame.class.getName());
 
-    /**
-     * Creates new form RegisterJFrame
-     */
     public ForgotPassJFrame() {
         initComponents();
     }
@@ -229,41 +226,41 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         resetPassBtn.doClick();
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }
 
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         passwordField.requestFocus();
-    }//GEN-LAST:event_usernameFieldActionPerformed
+    }
 
-    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {
         usernameField.setText("");
         passwordField.setText("");
         emailField.setText("");
         rememberCheckBox.setSelected(false);
-    }//GEN-LAST:event_clearBtnActionPerformed
+    }
 
-    private void showPasswordCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordCheckboxActionPerformed
+    private void showPasswordCheckboxActionPerformed(java.awt.event.ActionEvent evt) {
         if (showPasswordCheckbox.isSelected()) {
             passwordField.setEchoChar((char) 0); // tampilkan teks password
         } else {
             passwordField.setEchoChar('*'); // sembunyikan password
         }
-    }//GEN-LAST:event_showPasswordCheckboxActionPerformed
+    }
 
-    private void rememberCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rememberCheckBoxActionPerformed
+    private void rememberCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_rememberCheckBoxActionPerformed
+    }
 
-    private void registPageLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registPageLabel1MouseClicked
+    private void registPageLabel1MouseClicked(java.awt.event.MouseEvent evt) {
         this.dispose();
         new LoginJFrame().setVisible(true);
-    }//GEN-LAST:event_registPageLabel1MouseClicked
+    }
 
-    private void resetPassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetPassBtnActionPerformed
+    private void resetPassBtnActionPerformed(java.awt.event.ActionEvent evt) {
         String username = usernameField.getText().trim();
         String email = emailField.getText().trim();
         String newPassword = new String(passwordField.getPassword()).trim();
@@ -290,19 +287,17 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Gagal reset password. Username atau Email mungkin salah.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_resetPassBtnActionPerformed
+    }
 
-    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         usernameField.requestFocus();
-    }//GEN-LAST:event_emailFieldActionPerformed
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
@@ -316,9 +311,7 @@ public class ForgotPassJFrame extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new ForgotPassJFrame().setVisible(true));
     }
 

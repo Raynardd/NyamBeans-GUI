@@ -21,19 +21,14 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DetailPesananJDialog.class.getName());
 
-    /**
-     * Creates new form detailUserJDialog
-     */
     public DetailPesananJDialog(java.awt.Frame parent, boolean modal, int idPesanan) {
         super(parent, modal);
         initComponents();
-        loadData(idPesanan); // Panggil fungsi load data
-        setLocationRelativeTo(null); // Agar muncul di tengah layar
+        loadData(idPesanan);
+        setLocationRelativeTo(null);
     }
     
-    // Method Helper: Mengisi Form dan Tabel
     private void loadData(int id) {
-        // 1. Isi Data Header (Nama, Status, Total, Catatan)
         Pesanan p = Pesanan.getPesananById(id);
         if (p != null) {
             detailPesananField.setText(p.getNamaPemesan());
@@ -41,14 +36,12 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
             totalHargaField.setText("Rp " + p.getTotalHarga());
             catatanText.setText(p.getCatatan());
             
-            // Matikan edit agar Admin hanya bisa melihat (Read Only)
             detailPesananField.setEditable(false);
             statusField.setEditable(false);
             totalHargaField.setEditable(false);
             catatanText.setEditable(false);
         }
 
-        // 2. Isi Tabel Rincian Menu
         DefaultTableModel model = (DefaultTableModel) daftarMenuDipesanTable.getModel();
         model.setRowCount(0);
         List<DetailPesanan> details = DetailPesanan.getDetailByPesananId(id);
@@ -241,7 +234,7 @@ public class DetailPesananJDialog extends javax.swing.JDialog {
 
     private void tutupLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tutupLabelActionPerformed
         this.dispose();
-    }//GEN-LAST:event_tutupLabelActionPerformed
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel catatanLabel;
