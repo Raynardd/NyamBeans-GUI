@@ -20,10 +20,8 @@ public class Menu {
     private int hargaPerPorsi;
     private String deskripsi;
 
-    // Constructor Kosong
     public Menu() {}
 
-    // Constructor Lengkap
     public Menu(int idMenu, String namaMenu, String jenisMenu, int hargaPerPorsi, String deskripsi) {
         this.idMenu = idMenu;
         this.namaMenu = namaMenu;
@@ -32,7 +30,6 @@ public class Menu {
         this.deskripsi = deskripsi;
     }
 
-    // --- GETTER & SETTER ---
     public int getIdMenu() { return idMenu; }
     public void setIdMenu(int idMenu) { this.idMenu = idMenu; }
 
@@ -48,9 +45,9 @@ public class Menu {
     public String getDeskripsi() { return deskripsi; }
     public void setDeskripsi(String deskripsi) { this.deskripsi = deskripsi; }
 
-    // --- CRUD OPERATIONS ---
+    // CRUD
 
-    // 1. CREATE: Tambah Menu Baru
+    // CREATE: tambah menu baru
     public boolean tambahMenu() {
         String sql = "INSERT INTO menu (nama_menu, jenis_menu, harga_per_porsi, deskripsi) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -68,7 +65,7 @@ public class Menu {
         }
     }
 
-    // 2. READ: Ambil Semua Menu
+    // READ: ambil semua menu
     public static List<Menu> getAllMenu() {
         List<Menu> listMenu = new ArrayList<>();
         String sql = "SELECT * FROM menu";
@@ -92,7 +89,7 @@ public class Menu {
         return listMenu;
     }
 
-    // 3. UPDATE: Ubah Data Menu
+    // UPDATE: ubah data menu
     public boolean updateMenu() {
         String sql = "UPDATE menu SET nama_menu=?, jenis_menu=?, harga_per_porsi=?, deskripsi=? WHERE id_menu=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -111,7 +108,7 @@ public class Menu {
         }
     }
 
-    // 4. DELETE: Hapus Menu
+    // DELETE: hapus menu
     public boolean deleteMenu() {
         String sql = "DELETE FROM menu WHERE id_menu=?";
         try (Connection conn = DatabaseConnection.getConnection();

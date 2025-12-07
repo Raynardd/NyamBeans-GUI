@@ -27,7 +27,6 @@ public class User {
 
     public User() {}
 
-    // --- GETTER & SETTER LENGKAP ---
     public int getIdUser() { return idUser; }
     public void setIdUser(int idUser) { this.idUser = idUser; }
 
@@ -52,7 +51,6 @@ public class User {
     public String getAlamat() { return alamat; }
     public void setAlamat(String alamat) { this.alamat = alamat; }
 
-    // --- METHOD UTILITY ---
     public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -64,11 +62,11 @@ public class User {
         } catch (NoSuchAlgorithmException e) { return null; }
     }
 
-    // --- CRUD OPERATIONS (UNTUK ADMIN) ---
+    // CRUD (untuk admin)
 
-    // 1. CREATE: Tambah User Baru (Versi Admin)
+    // CREATE: nambah user baru (versi admin)
     public boolean tambahUser() {
-        // Query disesuaikan dengan kolom yang ada di database Anda
+        // query disesuaiin dengan kolom yang ada di database
         String sql = "INSERT INTO users (nama, username, password, role, no_telp, email, alamat) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -88,7 +86,7 @@ public class User {
         }
     }
 
-    // 2. READ: Ambil Semua User
+    // READ: ambil semua user
     public static List<User> getAllUsers() {
         List<User> listUser = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -112,14 +110,14 @@ public class User {
         return listUser;
     }
 
-    // 3. UPDATE: Ubah Data User
+    // UPDATE: ubah data user
     public boolean updateUser() {
-        // Cek apakah password diubah atau tidak
+        // cek password udah diubah atau belom
         boolean isPasswordChanged = (this.password != null && !this.password.isEmpty());
         
         String sql = "UPDATE users SET nama=?, username=?, role=?, no_telp=?, email=?, alamat=?";
         if (isPasswordChanged) {
-            sql += ", password=?"; // Tambah update password jika ada
+            sql += ", password=?"; // tambah update password jika ada
         }
         sql += " WHERE id_user=?";
 
@@ -147,7 +145,7 @@ public class User {
         }
     }
 
-    // 4. DELETE: Hapus User
+    // DELETE: hapus user
     public boolean deleteUser() {
         String sql = "DELETE FROM users WHERE id_user=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -157,7 +155,7 @@ public class User {
         } catch (SQLException e) { return false; }
     }
     
-    // 5. SEARCH: Cari User
+    // SEARCH: cari user
     public static List<User> cariUser(String keyword) {
         List<User> listUser = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE nama LIKE ? OR username LIKE ?";
@@ -183,7 +181,7 @@ public class User {
         return listUser;
     }
 
-    // 6. LOGIN (Tetap dipertahankan untuk fitur login)
+    // LOGIN (tetap dipertahankan untuk fitur login)
     public User login(String username, String rawPassword) {
         try {
             Connection conn = DatabaseConnection.getConnection();
@@ -209,31 +207,31 @@ public class User {
     
     public int registerUser() throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
-        // Query insert khusus pelanggan (Role default 'User', NoTelp & Alamat default '-')
+        // query insert khusus pelanggan (Role default 'User', NoTelp & Alamat default '-')
         String sql = "INSERT INTO users (username, password, email, role, nama, no_telp, alamat) VALUES (?, ?, ?, 'User', ?, '-', '-')";
         
         PreparedStatement pst = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         pst.setString(1, this.username);
-        pst.setString(2, this.password); // Password sudah di-hash di setter
+        pst.setString(2, this.password); // password sudah di-hash di setter
         pst.setString(3, this.email);
-        pst.setString(4, this.username); // Default nama disamakan username
+        pst.setString(4, this.username); // default nama disamakan username
         
         int affectedRows = pst.executeUpdate();
         
         if (affectedRows > 0) {
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
-                return rs.getInt(1); // Mengembalikan ID User baru
+                return rs.getInt(1); // mengembalikan ID User baru
             }
         }
-        return 0; // Gagal
+        return 0; 
     }
     
     public static boolean resetPassword(String username, String email, String newPassword) {
-        // Hash password baru
+        // hash password baru
         String hashedPassword = hashPassword(newPassword);
 
-        // Query langsung update (jika username & email cocok, password akan berubah)
+        // query langsung update (jika username & email cocok, password akan berubah)
         String sql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -244,7 +242,7 @@ public class User {
             pst.setString(3, email);
 
             int affectedRows = pst.executeUpdate();
-            return affectedRows > 0; // Mengembalikan true jika ada data yang terupdate
+            return affectedRows > 0; 
 
         } catch (SQLException e) {
             e.printStackTrace();

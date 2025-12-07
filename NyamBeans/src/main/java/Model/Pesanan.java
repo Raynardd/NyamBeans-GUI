@@ -21,12 +21,11 @@ public class Pesanan {
     private String lokasiAcara;
     private int totalHarga;
     private String status;
-    private String catatan;      // Tambahan baru
-    private String metodeBayar;  // Tambahan baru
+    private String catatan;      
+    private String metodeBayar;  
     
     public Pesanan() {}
 
-    // --- GETTER & SETTER ---
     public void setIdUser(int idUser) { this.idUser = idUser; }
     public int getIdPesanan() { return idPesanan; }
     public void setIdPesanan(int idPesanan) { this.idPesanan = idPesanan; }
@@ -40,16 +39,13 @@ public class Pesanan {
     public void setTotalHarga(int totalHarga) { this.totalHarga = totalHarga; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-    
-    // Getter Setter Baru
     public String getCatatan() { return catatan; }
     public void setCatatan(String catatan) { this.catatan = catatan; }
     public String getMetodeBayar() { return metodeBayar; }
     public void setMetodeBayar(String metodeBayar) { this.metodeBayar = metodeBayar; }
 
-    // --- DATABASE OPERATIONS ---
 
-    // 1. Simpan Transaksi Lengkap (FIXED)
+    // simpan transaksi lengkap
     public boolean simpanPesanan(List<DetailPesanan> details) {
         Connection conn = null;
         PreparedStatement pstPesanan = null;
@@ -69,13 +65,13 @@ public class Pesanan {
             pstPesanan.setInt(1, this.idUser);
             pstPesanan.setDate(2, new java.sql.Date(this.tglAcara.getTime()));
             pstPesanan.setString(3, this.lokasiAcara);
-            pstPesanan.setString(4, this.catatan); // Sekarang catatan disimpan
+            pstPesanan.setString(4, this.catatan); 
             
             int totalPorsi = 0;
             for(DetailPesanan d : details) totalPorsi += d.getJumlahPorsi();
             
             pstPesanan.setInt(5, totalPorsi);
-            pstPesanan.setString(6, this.metodeBayar); // INI PERBAIKANNYA (Dulu salah ambil lokasi)
+            pstPesanan.setString(6, this.metodeBayar);
             pstPesanan.setInt(7, this.totalHarga);
             
             int dp = this.totalHarga / 2;
@@ -105,7 +101,7 @@ public class Pesanan {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace(); // Cek Output di bawah Netbeans untuk lihat error detail
+            e.printStackTrace(); 
             try { if (conn != null) conn.rollback(); } catch (SQLException ex) {}
             return false;
         } finally {
@@ -113,7 +109,7 @@ public class Pesanan {
         }
     }
 
-    // 2. Ambil Semua Pesanan
+    // ambil semua pesanan
     public static List<Pesanan> getAllPesanan() {
         List<Pesanan> list = new ArrayList<>();
         String sql = "SELECT p.id_pesanan, p.tgl_acara, u.nama, p.lokasi_acara, p.total_harga, p.status_pesanan " +
@@ -135,7 +131,7 @@ public class Pesanan {
         return list;
     }
 
-    // 3. Cari Pesanan
+    // cari pesanan
     public static List<Pesanan> cariPesanan(String keyword) {
         List<Pesanan> list = new ArrayList<>();
         String sql = "SELECT p.id_pesanan, p.tgl_acara, u.nama, p.lokasi_acara, p.total_harga, p.status_pesanan " +
@@ -159,7 +155,7 @@ public class Pesanan {
         return list;
     }
 
-    // 4. Update Status
+    // update status pesanan
     public boolean updateStatus() {
         String sql = "UPDATE pesanan SET status_pesanan=? WHERE id_pesanan=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -170,7 +166,7 @@ public class Pesanan {
         } catch (SQLException e) { return false; }
     }
     
-    // 5. Laporan Keuangan
+    // laporan keuangan
     public static List<Pesanan> getLaporan(java.util.Date dari, java.util.Date sampai) {
         List<Pesanan> list = new ArrayList<>();
         String sql = "SELECT p.id_pesanan, p.tgl_pesan, u.nama, p.status_pesanan, p.metode_bayar, p.total_harga " +
@@ -195,7 +191,7 @@ public class Pesanan {
         return list;
     }
     
-    // 6. Riwayat User
+    // riwayat user
     public static List<Pesanan> getRiwayatUser(int userId) {
         List<Pesanan> list = new ArrayList<>();
         String sql = "SELECT * FROM pesanan WHERE id_user = ? ORDER BY id_pesanan DESC";
@@ -215,7 +211,7 @@ public class Pesanan {
         return list;
     }
     
-    // 7. Ambil Satu Pesanan berdasarkan ID (Untuk ditampilkan di Dialog)
+    // ambil satu pesanan berdasarkan ID (buat ditampilin di JDialog)
     public static Pesanan getPesananById(int id) {
         String sql = "SELECT p.*, u.nama FROM pesanan p JOIN users u ON p.id_user = u.id_user WHERE p.id_pesanan = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -231,10 +227,7 @@ public class Pesanan {
                 p.setCatatan(rs.getString("catatan"));
                 p.setStatus(rs.getString("status_pesanan"));
                 p.setTotalHarga(rs.getInt("total_harga"));
-                p.setMetodeBayar(rs.getString("metode_bayar")); // Pinjam variabel ini utk dp_dibayar sementara jika mau, atau tambah getter
-                // Note: Untuk UpdateStatusDialog, kita butuh nilai DP.
-                // Mari kita akses manual lewat ResultSet di Dialog saja atau tambah atribut dpDibayar di Pesanan.java
-                // Untuk simplifikasi, kita ambil data langsung di Dialog nanti.
+                p.setMetodeBayar(rs.getString("metode_bayar")); 
                 return p;
             }
         } catch (SQLException e) { e.printStackTrace(); }
@@ -249,7 +242,7 @@ public class Pesanan {
             pst.setInt(1, dp);
             pst.setInt(2, sisa);
             pst.setString(3, statusBaru);
-            pst.setInt(4, this.idPesanan); // Menggunakan ID dari objek ini
+            pst.setInt(4, this.idPesanan);
 
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {

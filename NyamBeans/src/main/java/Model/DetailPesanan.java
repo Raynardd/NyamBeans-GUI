@@ -17,7 +17,7 @@ public class DetailPesanan {
     private int idDetail;
     private int idPesanan;
     private int idMenu;
-    private String namaMenu; // Helper untuk tampilan
+    private String namaMenu;
     private int jumlahPorsi;
     private int hargaSatuan;
     private int subtotal;
@@ -32,7 +32,6 @@ public class DetailPesanan {
         this.subtotal = jumlahPorsi * hargaSatuan;
     }
 
-    // Getter Setter
     public int getIdDetail() { return idDetail; }
     public void setIdDetail(int idDetail) { this.idDetail = idDetail; }
 
@@ -54,7 +53,7 @@ public class DetailPesanan {
     public int getSubtotal() { return subtotal; }
     public void setSubtotal(int subtotal) { this.subtotal = subtotal; }
     
-    // Method Baru: Ambil Detail berdasarkan ID Pesanan
+    // ambil detail berdasarkan ID pesanan
     public static List<DetailPesanan> getDetailByPesananId(int idPesanan) {
         List<DetailPesanan> list = new ArrayList<>();
         String sql = "SELECT dp.*, m.nama_menu FROM detail_pesanan dp " +
